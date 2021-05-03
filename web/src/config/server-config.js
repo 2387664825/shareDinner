@@ -5,8 +5,14 @@ const serverUrl = {
     feature:{
         // 家庭
         family: `${serviceRootPath}/family`,
+        // 菜单
+        food: `${serviceRootPath}/food/list`,
+        // 订单
+        order: `${serviceRootPath}/order`,
         // 用户
         user: `${serviceRootPath}/user/list`,
+        // 管理员
+        admin: `${serviceRootPath}/admin/list`,
     },
 };
 export default serverUrl;

@@ -1,6 +1,7 @@
 package com.hfy.dinner.controller;
 
 import com.hfy.dinner.consts.Const;
+import com.hfy.dinner.repository.dto.AdminQueryDto;
 import com.hfy.dinner.repository.pojo.ResponseDo;
 import com.hfy.dinner.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class AdminController {
     }
 
     @GetMapping("/list")
-    public ResponseDo adminList() {
-        return new ResponseDo(adminService.selectList());
+    public ResponseDo adminList(AdminQueryDto queryDto) {
+        return new ResponseDo(adminService.selectList(queryDto));
     }
 }

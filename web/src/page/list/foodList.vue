@@ -178,7 +178,7 @@
                 restaurant_id: null,
                 city: {},
                 offset: 0,
-                limit: 20,
+                limit: 15,
                 count: 0,
                 tableData: [],
                 currentPage: 1,
@@ -223,25 +223,23 @@
     		headTop,
     	},
         methods: {
-            async getFoods(){
-                const Foods = await getFoods({offset: this.offset, limit: this.limit});
-                console.log("菜品列表:{}",Foods);
-                this.count = Foods.pageInfo.rowCount;
-                this.tableData = [];
-                Foods.data.forEach((item, index) => {
-                    const tableData = {};
-                    tableData.name = item.name;
-                    tableData.item_id = item.item_id;
-                    tableData.description = item.js;
-                    tableData.rating = item.rating;
-                    tableData.month_sales = item.month_sales;
-                    tableData.restaurant_id = item.familyId;
-                    tableData.category_id = item.categoryId;
-                    tableData.image_path = item.picture;
-                    tableData.familyName = item.familyName;
-                    tableData.index = index;
-                    this.tableData.push(tableData);
-                })
+            getFoods(){
+                const url = window.fdConfig.url.feature.food;
+                var params={
+                    offset:this.offset,
+                    limit:this.limit
+                };
+                const _this = this;
+                this.$http.get(url,{
+                    params:params
+                }).then(function(res){
+                    var data = res.body;
+                    console.log('菜品列表',data);
+                    _this.count = data.pageInfo.rowCount;
+                    _this.tableData = data.data;
+                },function(){
+                    console.log('请求失败处理');
+                });
             },
             tableRowClassName(row, index) {
 		        if (index === 1) {

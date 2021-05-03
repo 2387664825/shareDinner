@@ -164,7 +164,6 @@
 
 <script>
     import headTop from '../../components/headTop'
-    import {getUserList, getUserCount} from '@/api/getData'
     export default {
         data(){
             return {

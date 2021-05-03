@@ -1,6 +1,7 @@
 package com.hfy.dinner.controller;
 
 import com.hfy.dinner.consts.Const;
+import com.hfy.dinner.repository.dto.FoodQueryDto;
 import com.hfy.dinner.repository.pojo.ResponseDo;
 import com.hfy.dinner.service.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class FoodController {
     private FoodService foodService;
 
     @GetMapping("/list")
-    public ResponseDo getFoodList() {
-        return foodService.getFoodList();
+    public ResponseDo getFoodList(FoodQueryDto queryDto) {
+        return new ResponseDo(foodService.getFoodList(queryDto));
     }
 }

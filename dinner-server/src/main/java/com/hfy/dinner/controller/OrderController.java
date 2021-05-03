@@ -1,6 +1,7 @@
 package com.hfy.dinner.controller;
 
 import com.hfy.dinner.consts.Const;
+import com.hfy.dinner.repository.dto.OrderQueryDto;
 import com.hfy.dinner.repository.pojo.Order;
 import com.hfy.dinner.repository.pojo.ResponseDo;
 import com.hfy.dinner.service.OrderService;
@@ -17,8 +18,8 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping
-    public ResponseDo orderList() {
-        return new ResponseDo(orderService.getOrderList());
+    public ResponseDo orderList(OrderQueryDto queryDto) {
+        return new ResponseDo(orderService.getOrderList(queryDto));
     }
 
     @GetMapping("/user")

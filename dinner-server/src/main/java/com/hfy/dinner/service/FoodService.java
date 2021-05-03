@@ -1,12 +1,13 @@
 package com.hfy.dinner.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hfy.dinner.dao.CategoryDao;
 import com.hfy.dinner.dao.FamilyDao;
 import com.hfy.dinner.dao.FoodDao;
+import com.hfy.dinner.repository.dto.FoodQueryDto;
 import com.hfy.dinner.repository.pojo.Food;
-import com.hfy.dinner.repository.pojo.ResponseDo;
 import com.hfy.dinner.repository.vo.FoodVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -30,8 +31,11 @@ public class FoodService {
     @Resource
     private CategoryDao categoryDao;
 
-    public ResponseDo getFoodList() {
+    public PageInfo<FoodVo> getFoodList(FoodQueryDto queryDto) {
+        int page=queryDto.getOffset() / queryDto.getLimit()+1;
+        PageHelper.startPage(page, queryDto.getLimit());
         List<Food> foodList = foodDao.selectList(new QueryWrapper<>());
+        PageInfo foodPageInfo = new PageInfo<>(foodList);
         List<FoodVo> foodVos = new ArrayList<>();
         for (Food food : foodList) {
             FoodVo foodVo = new FoodVo();
@@ -40,6 +44,7 @@ public class FoodService {
             foodVo.setCategoryName(categoryDao.selectNameById(food.getCategoryId()));
             foodVos.add(foodVo);
         }
-        return new ResponseDo(new PageInfo<FoodVo>(foodVos));
+        foodPageInfo.setList(foodVos);
+        return foodPageInfo;
     }
 }

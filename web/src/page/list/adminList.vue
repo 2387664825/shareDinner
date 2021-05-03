@@ -6,12 +6,12 @@
 		      :data="tableData"
 		      style="width: 100%">
 		      <el-table-column
-		        prop="user_name"
+		        prop="name"
 		        label="姓名"
 		        width="180">
 		      </el-table-column>
 		      <el-table-column
-		        prop="create_time"
+		        prop="createTime"
 		        label="注册日期"
 		        width="220">
 		      </el-table-column>
@@ -48,7 +48,7 @@
                 tableData: [],
                 currentRow: null,
                 offset: 0,
-                limit: 20,
+                limit: 15,
                 count: 0,
                 currentPage: 1,
             }
@@ -68,23 +68,23 @@
                 this.offset = (val - 1)*this.limit;
                 this.getAdmin()
             },
-            async getAdmin(){
-                try{
-                    const res = await adminList({offset: this.offset, limit: this.limit});
-                    this.tableData = [];
-                    console.log("管理员数据列表：{}",res);
-                    res.data.forEach(item => {
-                        const tableItem = {
-                            create_time: item.loginTime,
-                            user_name: item.name,
-                            admin: item.type,
-                            city: item.city,
-                        };
-                        this.tableData.push(tableItem)
-                    })
-                }catch(err){
-                    console.log('获取数据失败', err);
-                }
+            getAdmin(){
+                const url = window.fdConfig.url.feature.admin;
+                var params={
+                    offset:this.offset,
+                    limit:this.limit
+                };
+                const _this = this;
+                this.$http.get(url,{
+                    params:params
+                }).then(function(res){
+                    var data = res.body;
+                    console.log('管理员列表',data);
+                    _this.count = data.pageInfo.rowCount;
+                    _this.tableData = data.data;
+                },function(){
+                    console.log('请求失败处理');
+                });
             }
         },
     }

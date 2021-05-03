@@ -1,8 +1,10 @@
 package com.hfy.dinner.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hfy.dinner.dao.AdminDao;
+import com.hfy.dinner.repository.dto.AdminQueryDto;
 import com.hfy.dinner.repository.pojo.Admin;
 import com.hfy.dinner.repository.pojo.ResponseDo;
 import org.springframework.stereotype.Service;
@@ -31,7 +33,9 @@ public class AdminService {
         }
     }
 
-    public PageInfo<Admin> selectList() {
+    public PageInfo<Admin> selectList(AdminQueryDto queryDto) {
+        int page=queryDto.getOffset() / queryDto.getLimit()+1;
+        PageHelper.startPage(page, queryDto.getLimit());
         QueryWrapper<Admin> queryWrapper = new QueryWrapper<>();
         List<Admin> admins = adminDao.selectList(queryWrapper);
         return new PageInfo<Admin>(admins);

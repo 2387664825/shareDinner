@@ -1,8 +1,10 @@
 package com.hfy.dinner.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hfy.dinner.dao.OrderDao;
+import com.hfy.dinner.repository.dto.OrderQueryDto;
 import com.hfy.dinner.repository.pojo.Order;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,9 @@ public class OrderService {
     private OrderDao orderDao;
 
 
-    public PageInfo<Order> getOrderList() {
+    public PageInfo<Order> getOrderList(OrderQueryDto queryDto) {
+        int page=queryDto.getOffset() / queryDto.getLimit()+1;
+        PageHelper.startPage(page, queryDto.getLimit());
         List<Order> orders = orderDao.selectList(new QueryWrapper<>());
         return new PageInfo<Order>(orders);
     }

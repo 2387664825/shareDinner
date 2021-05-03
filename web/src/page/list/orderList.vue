@@ -65,7 +65,7 @@
                 tableData: [],
                 currentRow: null,
                 offset: 0,
-                limit: 20,
+                limit: 15,
                 count: 0,
                 currentPage: 1,
                 restaurant_id: null,
@@ -91,21 +91,23 @@
                 this.offset = (val - 1)*this.limit;
                 this.getOrders()
             },
-            async getOrders(){
-                const Orders = await getOrderList({offset: this.offset, limit: this.limit, restaurant_id: this.restaurant_id});
-                console.log("订单列表：{}",Orders);
-                this.tableData = [];
-                Orders.data.forEach((item, index) => {
-                    const tableData = {};
-                    tableData.id = item.id;
-                    tableData.total_amount = item.total_amount;
-                    tableData.status = item.title;
-                    tableData.user_id = item.user_id;
- 					tableData.restaurant_id = item.family_id;
- 					tableData.address_id = item.address_id;
-                    tableData.index = index;
-                    this.tableData.push(tableData);
-                })
+            getOrders(){
+                const url = window.fdConfig.url.feature.order;
+                var params={
+                    offset:this.offset,
+                    limit:this.limit
+                };
+                const _this = this;
+                this.$http.get(url,{
+                    params:params
+                }).then(function(res){
+                    var data = res.body;
+                    console.log('订单列表',data);
+                    _this.count = data.pageInfo.rowCount;
+                    _this.tableData = data.data;
+                },function(){
+                    console.log('请求失败处理');
+                });
             },
             async expand(row, status){
             	if (status) {
