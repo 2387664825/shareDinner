@@ -1,36 +1,90 @@
 <template>
     <div class="fillcontain">
         <head-top></head-top>
+        <el-row class="query">
+            <el-col :span="8">
+                用户名称：
+                <el-input
+                    placeholder="请输入内容"
+                    prefix-icon="el-icon-search"
+                    v-model="query.name" style="width:190px;">
+                </el-input>
+            </el-col>
+            <el-col :span="8">
+                所属地区：
+                <el-input
+                    placeholder="请输入内容"
+                    prefix-icon="el-icon-search"
+                    v-model="query.city" style="width:190px;">
+                </el-input>
+            </el-col>
+            <el-col :span="8">
+                用户类型：
+                <el-select v-model="query.type" placeholder="请选择">
+                    <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                    </el-option>
+                </el-select>
+            </el-col>
+        </el-row>
+        <el-row class="query">
+            <el-col :span="16">
+                登录日期：
+                <el-date-picker
+                    v-model="query.loginBeginTime"
+                    type="date"
+                    placeholder="请选择开始日期">
+                </el-date-picker>
+                -
+                <el-date-picker
+                    v-model="query.loginEndTime"
+                    type="date"
+                    placeholder="请选择结束日期">
+                </el-date-picker>
+            </el-col>
+            <el-col :span="8">
+                <el-button type="primary"  @click="getShop">查询</el-button>
+                <el-button type="primary"  @click="resetData" plain>重置</el-button>
+            </el-col>
+        </el-row>
         <div class="table_container">
             <el-table
                 :data="tableData"
+                stripe
                 style="width: 100%">
                 <el-table-column type="expand">
                   <template slot-scope="props">
                     <el-form label-position="left" inline class="demo-table-expand">
-                      <el-form-item label="店铺名称">
+                      <el-form-item label="店铺名称：">
                         <span>{{ props.row.name }}</span>
                       </el-form-item>
-                      <el-form-item label="店铺地址">
-                        <span>{{ props.row.address }}</span>
+                      <el-form-item label="店铺地址：">
+                        <span>{{ props.row.location }}</span>
                       </el-form-item>
-                      <el-form-item label="店铺介绍">
-                        <span>{{ props.row.description }}</span>
+                      <el-form-item label="店铺介绍：">
+                        <span>{{ props.row.js }}</span>
                       </el-form-item>
-                      <el-form-item label="店铺 ID">
+                      <el-form-item label="店铺 ID：">
                         <span>{{ props.row.id }}</span>
                       </el-form-item>
-                      <el-form-item label="联系电话">
+                      <el-form-item label="联系电话：">
                         <span>{{ props.row.phone }}</span>
                       </el-form-item>
-                      <el-form-item label="评分">
-                        <span>{{ props.row.rating }}</span>
+                      <el-form-item label="评分：">
+                        <span>{{ props.row.rate }}</span>
                       </el-form-item>
-                      <el-form-item label="销售量">
-                        <span>{{ props.row.recent_order_num }}</span>
+                      <el-form-item label="销售量：">
+                        <span>{{ props.row.number }}</span>
                       </el-form-item>
                     </el-form>
                   </template>
+                </el-table-column>
+                <el-table-column
+                    type="index"
+                    width="100px">
                 </el-table-column>
                 <el-table-column
                   label="店铺名称"
@@ -38,31 +92,31 @@
                 </el-table-column>
                 <el-table-column
                   label="店铺地址"
-                  prop="address">
+                  prop="location">
                 </el-table-column>
                 <el-table-column
                   label="店铺介绍"
-                  prop="description">
+                  prop="js">
                 </el-table-column>
                 <el-table-column
                     label="申请状态"
                     prop="status">
                 </el-table-column>
                 <el-table-column label="操作" width="200">
-                  <template slot-scope="scope">
+                <template slot-scope="scope">
                     <el-button
-                      size="mini"
-                      @click="handleSp(scope.$index, scope.row)">审批</el-button>
+                        size="mini"
+                        @click="handleSp(scope.$index, scope.row)">审批</el-button>
                     <el-button
-                      size="mini"
-                      type="Success"
-                      @click="toFoodList(scope.$index, scope.row)">查看菜品</el-button>
+                        size="mini"
+                        type="Success"
+                        @click="toFoodList(scope.$index, scope.row)">查看菜品</el-button>
                     <el-button
-                      size="mini"
-                      type="danger"
-                      @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                  </template>
-                </el-table-column>
+                        size="mini"
+                        type="danger"
+                        @click="handleDelete(scope.$index, scope.row)">禁止</el-button>
+                </template>
+            </el-table-column>
             </el-table>
             <div class="Pagination">
                 <el-pagination
@@ -81,7 +135,7 @@
                     </el-form-item>
                     <el-form-item label="详细地址：" label-width="100px">
                         <label >{{address.address}}</label>
-                        <span>当前城市：{{city.name}}</span>
+                        <!--<span>当前城市：{{city.name}}</span>-->
                     </el-form-item>
                     <el-form-item label="店铺介绍：" label-width="100px">
                         <label >{{selectTable.description}}</label>
@@ -122,17 +176,15 @@
 </template>
 
 <script>
-    import headTop from '../components/headTop'
+    import headTop from '../../components/headTop'
     import {baseUrl, baseImgPath} from '@/config/env'
     import {cityGuess, getResturants, getResturantsCount, foodCategory, updateResturant, searchplace, deleteResturant} from '@/api/getData'
     export default {
         data(){
             return {
-                baseUrl,
-                baseImgPath,
-                city: {},
+                query:{name:'',city:'',loginBeginTime:'',loginEndTime:'',type:'',},
                 offset: 0,
-                limit: 20,
+                limit: 15,
                 count: 0,
                 tableData: [],
                 currentPage: 1,
@@ -141,18 +193,27 @@
                 categoryOptions: [],
                 selectedCategory: [],
                 address: {},
+                options: [{
+                    value: '1',
+                    label: '待审批'
+                }, {
+                    value: '2',
+                    label: '不通过'
+                },{
+                    value: '3',
+                    label: '已通过'
+                }]
             }
         },
     	components: {
     		headTop,
     	},
         created(){
-            this.getResturants();
+            this.getShop();
         },
         methods: {
-             getResturants(){
-                const restaurants = {};// getResturants({offset: this.offset, limit: this.limit});
-                const url = 'http://localhost:8002/api/v1/wc/family';
+             getShop(){
+                const url = window.fdConfig.url.feature.family;
                 var params={
                     offset:this.offset,
                     limit:this.limit
@@ -162,22 +223,9 @@
                      params:params
                  }).then(function(res){
                      var data = res.body;
-                     console.log(data);
+                     console.log('商家信息',data);
                      _this.count = data.pageInfo.rowCount;
-                     _this.tableData = [];
-                     data.data.forEach(item => {
-                         const tableData = {};
-                         tableData.name = item.name;
-                         tableData.address = item.location;
-                         tableData.description = item.js;
-                         tableData.id = item.id;
-                         tableData.phone = item.phone;
-                         tableData.rating = item.rating;
-                         tableData.status = item.statusT;
-                         tableData.recent_order_num = item.number;
-                         tableData.image_path = item.imgLocation;
-                         _this.tableData.push(tableData);
-                     })
+                     _this.tableData = data.data;
                  },function(){
                      console.log('请求失败处理');
                  });
@@ -188,7 +236,7 @@
             handleCurrentChange(val) {
                 this.currentPage = val;
                 this.offset = (val - 1)*this.limit;
-                this.getResturants()
+                this.getShop()
             },
             handleSp(index, row) {
                 this.selectTable = row;
@@ -216,22 +264,6 @@
                         message: err.message
                     });
                     console.log('删除店铺失败')
-                }
-            },
-            async querySearchAsync(queryString, cb) {
-                if (queryString) {
-                    try{
-                        const cityList = await searchplace(this.city.id, queryString);
-                        if (cityList instanceof Array) {
-                            cityList.map(item => {
-                                item.value = item.address;
-                                return item;
-                            })
-                            cb(cityList)
-                        }
-                    }catch(err){
-                        console.log(err)
-                    }
                 }
             },
             addressSelect(vale){
@@ -262,7 +294,17 @@
 </script>
 
 <style lang="less">
-	@import '../style/mixin';
+	@import '../../style/mixin';
+    .query{
+        margin: 20px 20px 0 20px;
+    }
+    .query .el-col {
+        min-height: 1px;
+    }
+    .query .el-button {
+        width: 100px;
+    }
+
     .demo-table-expand {
         font-size: 0;
     }

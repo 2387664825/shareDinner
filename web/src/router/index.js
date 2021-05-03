@@ -5,18 +5,18 @@ Vue.use(Router)
 
 const login = r => require.ensure([], () => r(require('@/page/login')), 'login');
 const manage = r => require.ensure([], () => r(require('@/page/manage')), 'manage');
-const home = r => require.ensure([], () => r(require('@/page/home')), 'home');
-const addGoods = r => require.ensure([], () => r(require('@/page/addGoods')), 'addGoods');
-const userList = r => require.ensure([], () => r(require('@/page/userList')), 'userList');
-const shopList = r => require.ensure([], () => r(require('@/page/shopList')), 'shopList');
-const foodList = r => require.ensure([], () => r(require('@/page/foodList')), 'foodList');
-const orderList = r => require.ensure([], () => r(require('@/page/orderList')), 'orderList');
-const adminList = r => require.ensure([], () => r(require('@/page/adminList')), 'adminList');
+const home = r => require.ensure([], () => r(require('@/page/list/home')), 'home');
+const userList = r => require.ensure([], () => r(require('@/page/list/userList')), 'userList');
+const shopList = r => require.ensure([], () => r(require('@/page/list/shopList')), 'shopList');
+const foodList = r => require.ensure([], () => r(require('@/page/list/foodList')), 'foodList');
+const orderList = r => require.ensure([], () => r(require('@/page/list/orderList')), 'orderList');
+const adminList = r => require.ensure([], () => r(require('@/page/list/adminList')), 'adminList');
+const addGoods = r => require.ensure([], () => r(require('@/page/edit/addGoods')), 'addGoods');
 const visitor = r => require.ensure([], () => r(require('@/page/visitor')), 'visitor');
 const newMember = r => require.ensure([], () => r(require('@/page/newMember')), 'newMember');
 const uploadImg = r => require.ensure([], () => r(require('@/page/uploadImg')), 'uploadImg');
 const vueEdit = r => require.ensure([], () => r(require('@/page/vueEdit')), 'vueEdit');
-const adminSet = r => require.ensure([], () => r(require('@/page/adminSet')), 'adminSet');
+const adminSet = r => require.ensure([], () => r(require('@/page/edit/adminSet')), 'adminSet');
 const sendMessage = r => require.ensure([], () => r(require('@/page/sendMessage')), 'sendMessage');
 const explain = r => require.ensure([], () => r(require('@/page/explain')), 'explain');
 

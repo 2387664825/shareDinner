@@ -1,5 +1,6 @@
 package com.hfy.dinner.service;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hfy.dinner.dao.FamilyDao;
 import com.hfy.dinner.repository.dto.FamilyQueryDto;
@@ -28,6 +29,8 @@ public class FamilyService {
     private FamilyDao familyDao;
 
     public PageInfo<?> query(FamilyQueryDto queryDto) {
+        int page=queryDto.getOffset() / queryDto.getLimit()+1;
+        PageHelper.startPage(page, queryDto.getLimit());
         List<Family> families = familyDao.selectByMap(new HashMap<>());
         for (Family family : families) {
             family.setStatusT(status.get(family.getStatus()));

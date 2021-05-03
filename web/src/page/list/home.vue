@@ -21,8 +21,8 @@
 </template>
 
 <script>
-	import headTop from '../components/headTop'
-	import tendency from '../components/tendency' 
+	import headTop from '../../components/headTop'
+	import tendency from '../../components/tendency'
 	import dtime from 'time-formater'
 	import {userCount, orderCount, getUserCount, getOrderCount, adminDayCount, adminCount} from '@/api/getData'
     export default {
@@ -93,7 +93,7 @@
 </script>
 
 <style lang="less">
-	@import '../style/mixin';
+	@import '../../style/mixin';
 	.data_section{
 		padding: 20px;
 		margin-bottom: 40px;

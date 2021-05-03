@@ -3,6 +3,7 @@ package com.hfy.dinner.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.hfy.dinner.consts.Const;
+import com.hfy.dinner.repository.dto.UserQueryDto;
 import com.hfy.dinner.repository.pojo.ResponseDo;
 import com.hfy.dinner.repository.pojo.User;
 import com.hfy.dinner.service.UserService;
@@ -49,7 +50,7 @@ public class UserController {
     }
 
     @GetMapping("/list")
-    public ResponseDo userList() {
-        return new ResponseDo(userService.selectUserList());
+    public ResponseDo userList(UserQueryDto queryDto) {
+        return new ResponseDo(userService.selectUserList(queryDto));
     }
 }
