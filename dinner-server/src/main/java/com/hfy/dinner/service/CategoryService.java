@@ -29,12 +29,10 @@ public class CategoryService {
         wrapper.eq("family_id", familyId);
         wrapper.orderByAsc("sort");
         List<Category> lists = categoryDao.selectList(wrapper);
-        QueryWrapper<Food> wrapper1 = new QueryWrapper<>();
-        wrapper1.eq("family_id", familyId);
         if (!CollectionUtils.isEmpty(lists)) {
             for (Category category : lists) {
-                wrapper1.eq("category_id", category.getId());
-                category.setFoods(foodDao.selectList(wrapper1));
+                List<Food> foodList = foodDao.selectByFaimlyIdAndCategoryId(familyId, category.getId());
+                category.setFoods(foodList);
             }
         }
         return new PageInfo<>(lists);

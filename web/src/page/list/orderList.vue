@@ -1,6 +1,55 @@
 <template>
     <div class="fillcontain">
         <head-top></head-top>
+        <el-row class="query">
+            <el-col :span="8">
+                用户名称：
+                <el-input
+                    placeholder="请输入内容"
+                    prefix-icon="el-icon-search"
+                    v-model="query.userName" style="width:190px;">
+                </el-input>
+            </el-col>
+            <el-col :span="8">
+                店铺名称：
+                <el-input
+                    placeholder="请输入内容"
+                    prefix-icon="el-icon-search"
+                    v-model="query.familyName" style="width:190px;">
+                </el-input>
+            </el-col>
+            <el-col :span="8">
+                订单状态：
+                <el-select v-model="query.type" placeholder="请选择">
+                    <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                    </el-option>
+                </el-select>
+            </el-col>
+        </el-row>
+        <el-row class="query">
+            <el-col :span="16">
+                产生日期：
+                <el-date-picker
+                    v-model="query.beginTime"
+                    type="date"
+                    placeholder="请选择开始日期">
+                </el-date-picker>
+                -
+                <el-date-picker
+                    v-model="query.endTime"
+                    type="date"
+                    placeholder="请选择结束日期">
+                </el-date-picker>
+            </el-col>
+            <el-col :span="8">
+                <el-button type="primary"  @click="getOrders">查询</el-button>
+                <el-button type="primary"  @click="resetData" plain>重置</el-button>
+            </el-col>
+        </el-row>
         <div class="table_container">
             <el-table
 			    :data="tableData"
@@ -29,25 +78,37 @@
 			        </el-form>
 			      </template>
 			    </el-table-column>
+                <el-table-column
+                    type="index"
+                    width="100px">
+                </el-table-column>
 			    <el-table-column
-			      label="订单 ID"
-			      prop="id">
+			      label="用户名称"
+			      prop="userName">
 			    </el-table-column>
+                <el-table-column
+                    label="店铺名称"
+                    prop="familyName">
+                </el-table-column>
 			    <el-table-column
 			      label="总价格"
-			      prop="total_amount">
+			      prop="price">
 			    </el-table-column>
 			    <el-table-column
 			      label="订单状态"
 			      prop="status">
 			    </el-table-column>
+                <el-table-column
+                    label="创建时间"
+                    prop="createTime">
+                </el-table-column>
 			</el-table>
             <div class="Pagination" style="text-align: left;margin-top: 10px;">
                 <el-pagination
                   @size-change="handleSizeChange"
                   @current-change="handleCurrentChange"
                   :current-page="currentPage"
-                  :page-size="20"
+                  :page-size="15"
                   layout="total, prev, pager, next"
                   :total="count">
                 </el-pagination>
@@ -62,6 +123,7 @@
     export default {
         data(){
             return {
+                query:{userName:'',familyName:'',beginTime:'',endTime:'',type:''},
                 tableData: [],
                 currentRow: null,
                 offset: 0,
@@ -70,6 +132,19 @@
                 currentPage: 1,
                 restaurant_id: null,
                 expendRow: [],
+                options: [{
+                    value: '1',
+                    label: '已预约'
+                }, {
+                    value: '2',
+                    label: '待完成'
+                }, {
+                    value: '3',
+                    label: '待评价'
+                }, {
+                    value: '4',
+                    label: '已完成'
+                }]
             }
         },
     	components: {

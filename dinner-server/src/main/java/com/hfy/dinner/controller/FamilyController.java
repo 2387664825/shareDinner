@@ -2,12 +2,11 @@ package com.hfy.dinner.controller;
 
 import com.hfy.dinner.consts.Const;
 import com.hfy.dinner.repository.dto.FamilyQueryDto;
+import com.hfy.dinner.repository.pojo.Family;
 import com.hfy.dinner.repository.pojo.ResponseDo;
 import com.hfy.dinner.service.FamilyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 家庭店铺
@@ -26,5 +25,15 @@ public class FamilyController {
         return new ResponseDo(familyService.query(queryDto));
     }
 
+    @GetMapping(value = "/id")
+    public ResponseDo queryById(Integer familyId) {
+        return new ResponseDo(200, familyService.getById(familyId));
+    }
+
+    @PostMapping(value = "/insert")
+    public ResponseDo insertFaimly(@RequestBody Family family) {
+        familyService.inserintoFamily(family);
+        return new ResponseDo(200, "插入成功");
+    }
 
 }

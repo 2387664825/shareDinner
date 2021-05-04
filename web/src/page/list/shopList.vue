@@ -128,7 +128,7 @@
                   :total="count">
                 </el-pagination>
             </div>
-            <el-dialog title="审核店铺信息" v-model="dialogFormVisible">
+            <el-dialog title="审核店铺信息" v-model="dialogFormVisible" >
                 <el-form :model="selectTable">
                     <el-form-item label="店铺名称：" label-width="100px">
                         <label >{{selectTable.name}}</label>

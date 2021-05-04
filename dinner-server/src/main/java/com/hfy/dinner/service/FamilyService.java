@@ -29,8 +29,10 @@ public class FamilyService {
     private FamilyDao familyDao;
 
     public PageInfo<?> query(FamilyQueryDto queryDto) {
-        int page=queryDto.getOffset() / queryDto.getLimit()+1;
-        PageHelper.startPage(page, queryDto.getLimit());
+        if (queryDto.getLimit() != null) {
+            int page = queryDto.getOffset() / queryDto.getLimit() + 1;
+            PageHelper.startPage(page, queryDto.getLimit());
+        }
         List<Family> families = familyDao.selectByMap(new HashMap<>());
         for (Family family : families) {
             family.setStatusT(status.get(family.getStatus()));
@@ -38,4 +40,12 @@ public class FamilyService {
         return new PageInfo<>(families);
     }
 
+    public Family getById(Integer familyId) {
+        return familyDao.selectById(familyId);
+    }
+
+    public void inserintoFamily(Family family) {
+        family.setStatus(0);
+        familyDao.insert(family);
+    }
 }

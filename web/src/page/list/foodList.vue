@@ -1,6 +1,55 @@
 <template>
     <div class="fillcontain">
         <head-top></head-top>
+        <el-row class="query">
+            <el-col :span="8">
+                用户名称：
+                <el-input
+                    placeholder="请输入内容"
+                    prefix-icon="el-icon-search"
+                    v-model="query.name" style="width:190px;">
+                </el-input>
+            </el-col>
+            <el-col :span="8">
+                所属地区：
+                <el-input
+                    placeholder="请输入内容"
+                    prefix-icon="el-icon-search"
+                    v-model="query.city" style="width:190px;">
+                </el-input>
+            </el-col>
+            <el-col :span="8">
+                用户类型：
+                <el-select v-model="query.type" placeholder="请选择">
+                    <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                    </el-option>
+                </el-select>
+            </el-col>
+        </el-row>
+        <el-row class="query">
+            <el-col :span="16">
+                登录日期：
+                <el-date-picker
+                    v-model="query.loginBeginTime"
+                    type="date"
+                    placeholder="请选择开始日期">
+                </el-date-picker>
+                -
+                <el-date-picker
+                    v-model="query.loginEndTime"
+                    type="date"
+                    placeholder="请选择结束日期">
+                </el-date-picker>
+            </el-col>
+            <el-col :span="8">
+                <el-button type="primary"  @click="getFoods">查询</el-button>
+                <el-button type="primary"  @click="resetData" plain>重置</el-button>
+            </el-col>
+        </el-row>
         <div class="table_container">
             <el-table
                 :data="tableData"
@@ -51,7 +100,7 @@
                 </el-table-column>
                 <el-table-column
                   label="食品介绍"
-                  prop="description"
+                  prop="js"
                   :show-overflow-tooltip='true'>
                 </el-table-column>
                 <el-table-column
@@ -173,8 +222,7 @@
     export default {
         data(){
             return {
-                baseUrl,
-                baseImgPath,
+                query:{name:'',city:'',loginBeginTime:'',loginEndTime:'',type:'',},
                 restaurant_id: null,
                 city: {},
                 offset: 0,

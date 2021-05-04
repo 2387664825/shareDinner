@@ -85,4 +85,9 @@ public class Family {
      */
     @TableField(value = "rate")
     private Float rating;
+    /**
+     * 单个价格
+     */
+    @TableField(value = "price")
+    private Float price;
 }
