@@ -31,6 +31,11 @@ public class Family {
     @TableField(value = "location")
     private String location;
     /**
+     * 家庭住址
+     */
+    @TableField(value = "location_code")
+    private Integer locationCode;
+    /**
      * 就餐开始时间
      */
     @TableField(value = "begin_time")
@@ -73,7 +78,11 @@ public class Family {
      */
     @TableField(value = "img_location")
     private String imgLocation;
-
+    /**
+     * 图片地址
+     */
+    @TableField(value = "jkz")
+    private String jkz;
     /**
      * 联系电话
      */
@@ -90,4 +99,20 @@ public class Family {
      */
     @TableField(value = "price")
     private Float price;
+
+    /**
+     * 纬度
+     */
+    @TableField(value = "wz_x")
+    private Double wzX;
+    /**
+     * 经度
+     */
+    @TableField(value = "wz_y")
+    private Double wzy;
+    /**
+     * 当前距离
+     */
+    @TableField(exist = false)
+    private Double jl;
 }

@@ -1,9 +1,8 @@
 <template>
     <div class="fillcontain">
-        <head-top></head-top>
         <el-row class="query">
             <el-col :span="8">
-                用户名称：
+                店铺名称：
                 <el-input
                     placeholder="请输入内容"
                     prefix-icon="el-icon-search"
@@ -19,7 +18,7 @@
                 </el-input>
             </el-col>
             <el-col :span="8">
-                用户类型：
+                店铺状态：
                 <el-select v-model="query.type" placeholder="请选择">
                     <el-option
                         v-for="item in options"
@@ -32,18 +31,6 @@
         </el-row>
         <el-row class="query">
             <el-col :span="16">
-                登录日期：
-                <el-date-picker
-                    v-model="query.loginBeginTime"
-                    type="date"
-                    placeholder="请选择开始日期">
-                </el-date-picker>
-                -
-                <el-date-picker
-                    v-model="query.loginEndTime"
-                    type="date"
-                    placeholder="请选择结束日期">
-                </el-date-picker>
             </el-col>
             <el-col :span="8">
                 <el-button type="primary"  @click="getShop">查询</el-button>
@@ -96,11 +83,13 @@
                 </el-table-column>
                 <el-table-column
                   label="店铺介绍"
-                  prop="js">
+                  prop="js"
+                  width="400"
+                  :show-overflow-tooltip='true'>
                 </el-table-column>
                 <el-table-column
                     label="申请状态"
-                    prop="status">
+                    prop="statusValue">
                 </el-table-column>
                 <el-table-column label="操作" width="200">
                 <template slot-scope="scope">
@@ -134,11 +123,11 @@
                         <label >{{selectTable.name}}</label>
                     </el-form-item>
                     <el-form-item label="详细地址：" label-width="100px">
-                        <label >{{address.address}}</label>
+                        <label >{{selectTable.location}}</label>
                         <!--<span>当前城市：{{city.name}}</span>-->
                     </el-form-item>
                     <el-form-item label="店铺介绍：" label-width="100px">
-                        <label >{{selectTable.description}}</label>
+                        <label >{{selectTable.js}}</label>
                     </el-form-item>
                     <el-form-item label="联系电话：" label-width="100px">
                         <label >{{selectTable.phone}}</label>
@@ -150,7 +139,7 @@
                           :show-file-list="false"
                           :on-success="handleServiceAvatarScucess"
                           :before-upload="beforeAvatarUpload">
-                          <img v-if="selectTable.image_path" :src="baseImgPath + selectTable.image_path" class="avatar">
+                          <img v-if="selectTable.imgLocation" :src="selectTable.imgLocation" class="avatar">
                           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
                     </el-form-item>
@@ -161,14 +150,27 @@
                             :show-file-list="false"
                             :on-success="handleServiceAvatarScucess"
                             :before-upload="beforeAvatarUpload">
-                            <img v-if="selectTable.image_path" :src="baseImgPath + selectTable.image_path" class="avatar">
+                            <img v-if="selectTable.jkz" :src="selectTable.jkz" class="avatar">
                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
                     </el-form-item>
+                    <el-form-item label="审批意见：" label-width="100px">
+                        <el-select v-model="sp.type" placeholder="请选择">
+                            <el-option
+                                v-for="item in spType"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="原因：" label-width="100px" v-if="sp.type == 2">
+                        <el-input type="textarea" v-model="sp.yy"></el-input>
+                    </el-form-item>
                 </el-form>
               <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">拒 绝</el-button>
-                <el-button type="primary" @click="updateShop">同 意</el-button>
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="updateShop">保 存</el-button>
               </div>
             </el-dialog>
         </div>
@@ -202,7 +204,15 @@
                 },{
                     value: '3',
                     label: '已通过'
-                }]
+                }],
+                spType: [{
+                    value: '1',
+                    label: '通过'
+                }, {
+                    value: '2',
+                    label: '不通过'
+                }],
+                sp:{type:'',yy:''}
             }
         },
     	components: {
@@ -225,6 +235,9 @@
                      var data = res.body;
                      console.log('商家信息',data);
                      _this.count = data.pageInfo.rowCount;
+                     for(var i =0 ;i<data.data.length;i++){
+                         data.data[i].statusValue = _this.options[data.data[i].status - 1].label;
+                     }
                      _this.tableData = data.data;
                  },function(){
                      console.log('请求失败处理');

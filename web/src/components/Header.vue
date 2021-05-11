@@ -1,55 +1,14 @@
 <template>
     <div class="header">
-        <!-- 折叠按钮 -->
-        <div class="collapse-btn" @click="collapseChage">
-            <i class="el-icon-menu"></i>
-        </div>
-        <div class="logo">{{$t("home.title")}}</div>
-        <div class="header-right">
-            <div class="header-user-con">
-                <!-- <marquee onMouseOver="this.start()" style="font-size:18px;padding-bottom:4px;width:100px;" scrollamount="1">{{getlev}}</marquee> -->
-                <div style="font-size:18px;padding-bottom:4px;width:60px;">{{getlev}}</div>
-                <!-- 全屏显示 -->
-                <div class="btn-fullscreen" @click="handleFullScreen">
-                    <el-tooltip effect="dark" :content="fullscreen?`取消全屏`:`全屏`" placement="bottom">
-                        <i class="el-icon-rank"></i>
-                    </el-tooltip>
-                </div>
-                <!-- 消息中心 -->
-                <div class="btn-bell">
-                    <el-tooltip effect="dark" :content="message?`有${message}条未读消息`:`消息中心`" placement="bottom">
-                        <router-link to="/tabs">
-                            <i class="el-icon-bell"></i>
-                        </router-link>
-                    </el-tooltip>
-                    <span class="btn-bell-badge" v-if="message"></span>
-                </div>
-                <!-- 用户头像 -->
-                <div class="user-avator"><img src="static/img/img.jpg"></div>
-                <!-- 用户名下拉菜单 -->
-                <el-dropdown class="user-name" trigger="click" @command="handleCommand">
-                    <span class="el-dropdown-link">
-                        {{username}} <i class="el-icon-caret-bottom"></i>
-                    </span>
-
-                    <el-dropdown-menu slot="dropdown">
-
-                        <a  href="https://github.com/merciqiao" target="_blank">
-                            <el-dropdown-item>关于作者</el-dropdown-item>
-                        </a>
-                        <a href="https://github.com/merciqiao/merciqiao-vue" target="_blank">
-                            <el-dropdown-item>项目仓库</el-dropdown-item>
-                        </a>
-                        <a href="/zanzhu" target="_blank">
-                            <el-dropdown-item style="color:orange;">赞助作者</el-dropdown-item>
-                        </a>
-                        <el-dropdown-item divided  command="changeZh">切换中文</el-dropdown-item>
-                        <el-dropdown-item command="changeEn">切换英文</el-dropdown-item>
-                        <el-dropdown-item divided  command="loginout">退出登录</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
-            </div>
-        </div>
+        <img src="http://localhost:8080/api/v1/image/get?path=logot.png" style="width: 50px;height:50px;display: inline-block;padding-top: 10px">
+        <span style="position: absolute;top:20px;left:100px">共享晚餐后台管理系统</span>
+        <el-dropdown  style="float:right;padding-top: 20px" @command="handleCommand" menu-align='start'>
+            <img src="http://localhost:8080/api/v1/image/get?path=tx.jpg" class="avator">
+            <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="home">首页</el-dropdown-item>
+                <el-dropdown-item command="signout">退出</el-dropdown-item>
+            </el-dropdown-menu>
+        </el-dropdown>
     </div>
 </template>
 <script>
@@ -68,71 +27,8 @@
                 let username = this.$common.getSessionStorage('username');
                 return username ? username : this.name;
             },
-            getlev(){
-
-                let levList = this.$common.getSessionStorage('lev',true);
-                let lev='';
-                if(levList){
-                    for(var i=0;i<levList.length;i++){
-                        lev+=levList[i].roleName;
-                    }
-                }
-
-                return lev ? lev : this.lev;
-            }
         },
-        methods:{
-            // 用户名下拉菜单选择事件
-            handleCommand(command) {
-                if(command == 'loginout'){
-                    this.$common.removeSessionStorage('token');
-                    this.$router.push('/login');
-                }
-                else if(command == 'changeZh'){
-                    this.$i18n.locale = 'zh_CN';
-                }
-                else if(command == 'changeEn'){
-                    this.$i18n.locale = 'en_US';
-                }
-            },
-            // 侧边栏折叠
-            collapseChage(){
-                this.collapse = !this.collapse;
-                bus.$emit('collapse', this.collapse);
-            },
-            // 全屏事件
-            handleFullScreen(){
-                let element = document.documentElement;
-                if (this.fullscreen) {
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                    } else if (document.webkitCancelFullScreen) {
-                        document.webkitCancelFullScreen();
-                    } else if (document.mozCancelFullScreen) {
-                        document.mozCancelFullScreen();
-                    } else if (document.msExitFullscreen) {
-                        document.msExitFullscreen();
-                    }
-                } else {
-                    if (element.requestFullscreen) {
-                        element.requestFullscreen();
-                    } else if (element.webkitRequestFullScreen) {
-                        element.webkitRequestFullScreen();
-                    } else if (element.mozRequestFullScreen) {
-                        element.mozRequestFullScreen();
-                    } else if (element.msRequestFullscreen) {
-                        // IE11
-                        element.msRequestFullscreen();
-                    }
-                }
-                this.fullscreen = !this.fullscreen;
-            }
-        },
-        mounted(){
-            if(document.body.clientWidth < 1366){
-                this.collapseChage();
-            }
-        }
+        methods: {}
     }
 </script>
 <style scoped>
@@ -143,6 +39,8 @@
         height: 70px;
         font-size: 22px;
         color: #fff;
+        background: #0f1735;
+        padding-left: 20px;
     }
     .collapse-btn{
         float: left;
@@ -208,5 +106,13 @@
     }
     .el-dropdown-menu__item{
         text-align: center;
+    }
+    .header_container{
+        background-color: #EFF2F7;
+        height: 60px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 20px;
     }
 </style>

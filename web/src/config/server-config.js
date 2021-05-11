@@ -13,6 +13,8 @@ const serverUrl = {
         user: `${serviceRootPath}/user/list`,
         // 管理员
         admin: `${serviceRootPath}/admin/list`,
+        // 反馈模块
+        back:`${serviceRootPath}/back`,
     },
 };
 export default serverUrl;

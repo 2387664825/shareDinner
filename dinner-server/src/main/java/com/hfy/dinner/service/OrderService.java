@@ -64,6 +64,7 @@ public class OrderService {
             orderVo.setFamilyName(family.getName());
             orderVo.setUserName(user.getName());
             orderVo.setPicture(family.getImgLocation());
+            orderVo.setLocation(family.getLocation());
             lists.add(orderVo);
         }
         return lists;

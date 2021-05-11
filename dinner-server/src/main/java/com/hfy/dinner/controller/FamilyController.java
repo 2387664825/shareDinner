@@ -20,9 +20,27 @@ public class FamilyController {
     @Autowired
     private FamilyService familyService;
 
+    /**
+     * 后台分页查询
+     *
+     * @param queryDto
+     * @return
+     */
     @GetMapping
     public ResponseDo query(FamilyQueryDto queryDto) {
         return new ResponseDo(familyService.query(queryDto));
+    }
+
+    /**
+     * 区域查询
+     *
+     * @param x 纬度
+     * @param y 经度
+     * @return
+     */
+    @GetMapping("/qy")
+    public ResponseDo queryByqy(Double x, Double y) {
+        return new ResponseDo(familyService.queryByQy(x, y));
     }
 
     @GetMapping(value = "/id")

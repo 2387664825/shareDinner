@@ -11,13 +11,13 @@ const shopList = r => require.ensure([], () => r(require('@/page/list/shopList')
 const foodList = r => require.ensure([], () => r(require('@/page/list/foodList')), 'foodList');
 const orderList = r => require.ensure([], () => r(require('@/page/list/orderList')), 'orderList');
 const adminList = r => require.ensure([], () => r(require('@/page/list/adminList')), 'adminList');
+const backList = r => require.ensure([], () => r(require('@/page/list/backList')), 'backList');
 const addGoods = r => require.ensure([], () => r(require('@/page/edit/addGoods')), 'addGoods');
 const visitor = r => require.ensure([], () => r(require('@/page/visitor')), 'visitor');
 const newMember = r => require.ensure([], () => r(require('@/page/newMember')), 'newMember');
 const uploadImg = r => require.ensure([], () => r(require('@/page/uploadImg')), 'uploadImg');
 const vueEdit = r => require.ensure([], () => r(require('@/page/vueEdit')), 'vueEdit');
 const adminSet = r => require.ensure([], () => r(require('@/page/edit/adminSet')), 'adminSet');
-const sendMessage = r => require.ensure([], () => r(require('@/page/sendMessage')), 'sendMessage');
 const explain = r => require.ensure([], () => r(require('@/page/explain')), 'explain');
 
 const routes = [
@@ -58,6 +58,10 @@ const routes = [
 			component: adminList,
 			meta: ['数据管理', '管理员列表'],
 		},{
+            path: '/backList',
+            component: backList,
+            meta: ['数据管理', '反馈列表'],
+        },{
 			path: '/visitor',
 			component: visitor,
 			meta: ['图表', '用户分布'],
@@ -77,14 +81,6 @@ const routes = [
 			path: '/adminSet',
 			component: adminSet,
 			meta: ['设置', '管理员设置'],
-		},{
-			path: '/sendMessage',
-			component: sendMessage,
-			meta: ['设置', '发送通知'],
-		},{
-			path: '/explain',
-			component: explain,
-			meta: ['说明', '说明'],
 		}]
 	}
 ]

@@ -1,6 +1,5 @@
 <template>
     <div class="fillcontain">
-        <head-top></head-top>
         <el-row class="query">
             <el-col :span="8">
                 用户名称：

@@ -6,8 +6,10 @@ import com.github.pagehelper.PageInfo;
 import com.hfy.dinner.dao.CategoryDao;
 import com.hfy.dinner.dao.FamilyDao;
 import com.hfy.dinner.dao.FoodDao;
+import com.hfy.dinner.dao.UserDao;
 import com.hfy.dinner.repository.dto.FoodQueryDto;
 import com.hfy.dinner.repository.pojo.Food;
+import com.hfy.dinner.repository.pojo.User;
 import com.hfy.dinner.repository.vo.FoodVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,9 @@ import java.util.List;
  */
 @Service
 public class FoodService {
+    @Resource
+    private UserDao userDao;
+
     @Resource
     private FoodDao foodDao;
 
@@ -46,5 +51,31 @@ public class FoodService {
         }
         foodPageInfo.setList(foodVos);
         return foodPageInfo;
+    }
+
+    public Object getFoodByUserId(Integer userId) {
+        User user = userDao.selectById(userId);
+        List<Food> foodList = new ArrayList<>();
+        if (user.getFamilydId() != null) {
+            foodList = foodDao.selectBYFamilyId(user.getFamilydId());
+        }
+        return foodList;
+    }
+
+    public Object getFoodById(Integer id) {
+        return foodDao.selectById(id);
+    }
+
+    public boolean updateOrInsertFood(Food food) {
+        try {
+            if (food.getId() != null) {
+                foodDao.updateById(food);
+            } else {
+                foodDao.insert(food);
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

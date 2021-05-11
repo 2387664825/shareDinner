@@ -2,7 +2,7 @@
     <div class="fillcontain">
         <el-row class="query">
             <el-col :span="8">
-                食品名称：
+                用户名称：
                 <el-input
                     placeholder="请输入内容"
                     prefix-icon="el-icon-search"
@@ -10,7 +10,7 @@
                 </el-input>
             </el-col>
             <el-col :span="8">
-                店家名称：
+                状态：
                 <el-input
                     placeholder="请输入内容"
                     prefix-icon="el-icon-search"
@@ -32,32 +32,20 @@
                 <el-table-column type="expand">
                   <template slot-scope="props">
                     <el-form label-position="left" inline class="demo-table-expand">
-                      <el-form-item label="食品名称">
-                        <span>{{ props.row.name }}</span>
-                      </el-form-item>
-                      <el-form-item label="餐馆名称">
+                      <el-form-item label="用户名称">
                         <span>{{ props.row.familyName }}</span>
                       </el-form-item>
-                      <el-form-item label="食品 ID">
+                      <el-form-item label="内容">
                         <span>{{ props.row.id }}</span>
                       </el-form-item>
-                      <el-form-item label="餐馆 ID">
+                      <el-form-item label="创建时间">
                         <span>{{ props.row.familyId }}</span>
                       </el-form-item>
-                      <el-form-item label="食品介绍">
+                      <el-form-item label="官方反馈">
                         <span>{{ props.row.description }}</span>
                       </el-form-item>
-                      <el-form-item label="餐馆地址">
+                      <el-form-item label="反馈时间">
                         <span>{{ props.row.restaurant_address }}</span>
-                      </el-form-item>
-                      <el-form-item label="食品评分">
-                        <span>{{ props.row.rating }}</span>
-                      </el-form-item>
-                      <el-form-item label="食品分类">
-                        <span>{{ props.row.categoryName }}</span>
-                      </el-form-item>
-                      <el-form-item label="月销量">
-                        <span>{{ props.row.month_sales }}</span>
                       </el-form-item>
                     </el-form>
                   </template>
@@ -67,17 +55,21 @@
                     width="100px">
                 </el-table-column>
                 <el-table-column
-                  label="食品名称"
-                  prop="name">
+                  label="用户名称"
+                  prop="userName">
                 </el-table-column>
                 <el-table-column
-                  label="食品介绍"
-                  prop="js"
+                  label="内容"
+                  prop="content"
                   :show-overflow-tooltip='true'>
                 </el-table-column>
                 <el-table-column
-                  label="店家名称"
-                  prop="familyName">
+                  label="状态"
+                  prop="typeValue">
+                </el-table-column>
+                <el-table-column
+                    label="时间"
+                    prop="createTime">
                 </el-table-column>
                 <el-table-column label="操作" width="160">
                   <template slot-scope="scope">
@@ -219,6 +211,13 @@
 		        },
 		        specsFormVisible: false,
                 expendRow: [],
+                options: [{
+                    value: '0',
+                    label: '未反馈'
+                }, {
+                    value: '1',
+                    label: '已反馈'
+                }]
             }
         },
         created(){
@@ -244,7 +243,7 @@
     	},
         methods: {
             getFoods(){
-                const url = window.fdConfig.url.feature.food;
+                const url = window.fdConfig.url.feature.back;
                 var params={
                     offset:this.offset,
                     limit:this.limit
@@ -254,8 +253,11 @@
                     params:params
                 }).then(function(res){
                     var data = res.body;
-                    console.log('菜品列表',data);
+                    console.log('反馈列表',data);
                     _this.count = data.pageInfo.rowCount;
+                    for(var i =0 ;i<data.data.length;i++){
+                        data.data[i].typeValue = _this.options[data.data[i].type ].label;
+                    }
                     _this.tableData = data.data;
                 },function(){
                     console.log('请求失败处理');

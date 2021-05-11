@@ -15,4 +15,6 @@ public class OrderVo extends Order {
 
     private String picture;
 
+    private String location;
+
 }

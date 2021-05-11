@@ -16,4 +16,7 @@ import java.util.List;
 public interface FoodDao extends BaseMapper<Food> {
     @Select("select * from food where family_id = #{familyId} and category_id = #{categoryId}")
     List<Food> selectByFaimlyIdAndCategoryId(@Param(value = "familyId") Integer familyId, @Param(value = "categoryId") Integer id);
+
+    @Select("select * from food where family_id = #{familyId} ")
+    List<Food> selectBYFamilyId(Integer familydId);
 }

@@ -25,8 +25,8 @@ public class User {
     @TableField(value = "open_id")
     private String openId;
 
-    @TableField(value = "authority")
-    private Integer authority;
+    @TableField(value = "family_id")
+    private Integer familydId;
 
     @TableField(value = "name")
     private String name;

@@ -1,6 +1,5 @@
 <template>
     <div>
-        <head-top></head-top>
 		<section class="data_section">
 			<header class="section_title">数据统计</header>
 			<el-row :gutter="20" style="margin-bottom: 10px;">
@@ -28,14 +27,14 @@
     export default {
     	data(){
     		return {
-    			userCount: null,
-    			orderCount: null,
-                adminCount: null,
-                allUserCount: null,
-                allOrderCount: null,
-                allAdminCount: null,
+    			userCount: 12,
+    			orderCount: 15,
+                adminCount: 16,
+                allUserCount: 17,
+                allOrderCount: 20,
+                allAdminCount: 2,
     			sevenDay: [],
-    			sevenDate: [[],[],[]],
+    			sevenDate: [[112,54,83,16,127,100,66],[],[]],
     		}
     	},
     	components: {

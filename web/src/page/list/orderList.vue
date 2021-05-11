@@ -1,6 +1,5 @@
 <template>
     <div class="fillcontain">
-        <head-top></head-top>
         <el-row class="query">
             <el-col :span="8">
                 用户名称：
@@ -96,7 +95,7 @@
 			    </el-table-column>
 			    <el-table-column
 			      label="订单状态"
-			      prop="status">
+			      prop="statusValue">
 			    </el-table-column>
                 <el-table-column
                     label="创建时间"
@@ -179,6 +178,9 @@
                     var data = res.body;
                     console.log('订单列表',data);
                     _this.count = data.pageInfo.rowCount;
+                    for(var i =0 ;i<data.data.length;i++){
+                        data.data[i].statusValue = _this.options[data.data[i].status - 1].label;
+                    }
                     _this.tableData = data.data;
                 },function(){
                     console.log('请求失败处理');

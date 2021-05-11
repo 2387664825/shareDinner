@@ -1,29 +1,38 @@
 <template>
     <div class="fillcontain">
-        <head-top></head-top>
         <div class="table_container">
             <el-table
 		      :data="tableData"
 		      style="width: 100%">
+                <el-table-column
+                    type="index"
+                    width="100px">
+                </el-table-column>
 		      <el-table-column
 		        prop="name"
 		        label="姓名"
 		        width="180">
 		      </el-table-column>
 		      <el-table-column
-		        prop="createTime"
-		        label="注册日期"
+		        prop="loginTime"
+		        label="登录日期"
 		        width="220">
 		      </el-table-column>
-              <el-table-column
-                prop="city"
-                label="地址"
-                width="180">
-              </el-table-column>
 		      <el-table-column
-		        prop="admin"
+		        prop="typeValue"
 		        label="权限">
 		      </el-table-column>
+                <el-table-column label="操作" width="160">
+                    <template slot-scope="scope">
+                        <el-button
+                            size="small"
+                            @click="handleEdit(scope.row)">编辑</el-button>
+                        <el-button
+                            size="small"
+                            type="danger"
+                            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
 		    </el-table>
 		    <div class="Pagination" style="text-align: left;margin-top: 10px;">
                 <el-pagination
@@ -81,6 +90,9 @@
                     var data = res.body;
                     console.log('管理员列表',data);
                     _this.count = data.pageInfo.rowCount;
+                    for(var i =0 ;i<data.data.length;i++){
+                        data.data[i].typeValue = data.data[i].type == 0?'普通管理员':'超级管理员'
+                    }
                     _this.tableData = data.data;
                 },function(){
                     console.log('请求失败处理');
