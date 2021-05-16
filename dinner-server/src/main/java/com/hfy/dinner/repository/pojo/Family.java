@@ -16,7 +16,7 @@ import java.util.Date;
 @Data
 @ToString
 @TableName("family")
-public class Family {
+public class Family implements Comparable<Family> {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
@@ -115,4 +115,15 @@ public class Family {
      */
     @TableField(exist = false)
     private Double jl;
+
+    @Override
+    public int compareTo(Family o) {
+        if (this.jl < o.jl) {
+            return -1;
+        } else if (this.jl == o.jl) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
 }

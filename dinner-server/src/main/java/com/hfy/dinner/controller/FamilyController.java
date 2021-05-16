@@ -43,9 +43,9 @@ public class FamilyController {
         return new ResponseDo(familyService.queryByQy(x, y));
     }
 
-    @GetMapping(value = "/id")
-    public ResponseDo queryById(Integer familyId) {
-        return new ResponseDo(200, familyService.getById(familyId));
+    @GetMapping(value = "/{id}")
+    public ResponseDo queryById(@PathVariable(value = "id") Integer id) {
+        return new ResponseDo(200, familyService.getById(id));
     }
 
     @PostMapping(value = "/insert")

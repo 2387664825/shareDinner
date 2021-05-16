@@ -19,7 +19,7 @@ public class ProvinceController {
     private ProvinceService provinceService;
 
     @GetMapping("/area")
-    public ResponseDo getArea(String city) {
-        return new ResponseDo(200, provinceService.getArea(city));
+    public ResponseDo getArea(String code) {
+        return new ResponseDo(200, provinceService.getArea(code));
     }
 }
