@@ -39,8 +39,8 @@ public class FamilyController {
      * @return
      */
     @GetMapping("/qy")
-    public ResponseDo queryByqy(Double x, Double y) {
-        return new ResponseDo(familyService.queryByQy(x, y));
+    public ResponseDo queryByqy(Double x, Double y, String search) {
+        return new ResponseDo(familyService.queryByQy(x, y, search));
     }
 
     @GetMapping(value = "/{id}")

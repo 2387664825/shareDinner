@@ -59,13 +59,15 @@ public class FamilyService {
         }
     }
 
-    public PageInfo<Family> queryByQy(Double x, Double y) {
+    //search 从店铺名字进行搜索，
+    public PageInfo<Family> queryByQy(Double x, Double y, String search) {
         Province province = null;
+        QueryWrapper<Province> provinceQueryWrapper = new QueryWrapper<Province>();
+        List<Province> provinces = null;
         try {
             String district = DistanceUtil.getDistrict(x, y);
-            QueryWrapper<Province> provinceQueryWrapper = new QueryWrapper<Province>();
             provinceQueryWrapper.eq("name", district);
-            List<Province> provinces = provinceDao.selectList(provinceQueryWrapper);
+            provinces = provinceDao.selectList(provinceQueryWrapper);
             if (!CollectionUtils.isEmpty(provinces)) {
                 province = provinces.get(0);
             }
@@ -74,9 +76,15 @@ public class FamilyService {
             System.out.println("根据座标，获取位置失败");
             e.printStackTrace();
         }
-        QueryWrapper<Family> familyQueryWrapper = new QueryWrapper<>();
-        familyQueryWrapper.eq("location_code", province.getCode());
-        List<Family> families = familyDao.selectList(familyQueryWrapper);
+        QueryWrapper<Family> lambda = new QueryWrapper<Family>();
+        if (province == null) {
+            province = provinceDao.selectById("2268");
+        }
+        lambda.eq("location_code", province.getCode());
+        if (search != null && !"".equals(search)) {
+            lambda.like("name", search);
+        }
+        List<Family> families = familyDao.selectList(lambda);
         for (Family family : families) {
             family.setStatusT(status.get(family.getStatus()));
             if (x != null && y != null)

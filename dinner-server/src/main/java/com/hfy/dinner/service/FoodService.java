@@ -56,8 +56,8 @@ public class FoodService {
     public Object getFoodByUserId(Integer userId) {
         User user = userDao.selectById(userId);
         List<Food> foodList = new ArrayList<>();
-        if (user.getFamilydId() != null) {
-            foodList = foodDao.selectBYFamilyId(user.getFamilydId());
+        if (user.getFamilyId() != null) {
+            foodList = foodDao.selectBYFamilyId(user.getFamilyId());
         }
         return foodList;
     }

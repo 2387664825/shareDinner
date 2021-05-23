@@ -37,4 +37,12 @@ public class CategoryService {
         }
         return new PageInfo<>(lists);
     }
+
+    public List<Category> getCategory(Integer id) {
+        QueryWrapper<Category> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("family_id", id);
+        queryWrapper.orderByAsc("sort");
+        List<Category> lists = categoryDao.selectList(queryWrapper);
+        return lists;
+    }
 }

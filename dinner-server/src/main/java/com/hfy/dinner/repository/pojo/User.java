@@ -26,7 +26,7 @@ public class User {
     private String openId;
 
     @TableField(value = "family_id")
-    private Integer familydId;
+    private Integer familyId;
 
     @TableField(value = "name")
     private String name;

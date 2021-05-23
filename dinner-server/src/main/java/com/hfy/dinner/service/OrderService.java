@@ -13,6 +13,7 @@ import com.hfy.dinner.repository.pojo.User;
 import com.hfy.dinner.repository.vo.OrderVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -68,5 +69,26 @@ public class OrderService {
             lists.add(orderVo);
         }
         return lists;
+    }
+
+    public Order getOrderByUserIdAndFamilyId(Integer userId, Integer familyId) {
+        List<Order> orders = orderDao.selectToday(userId, familyId);
+        if (!CollectionUtils.isEmpty(orders)) {
+            return orders.get(0);
+        }
+        return null;
+    }
+
+    public boolean update(Order order) {
+        if (order.getUserId() == null) {
+            System.out.println("订单 用户id 不能为空");
+            return false;
+        }
+        if (order.getFamilyId() == null) {
+            System.out.println("订单 店铺id 不能为空");
+            return false;
+        }
+        orderDao.updateByOrder(order.getUserId(), order.getFamilyId());
+        return true;
     }
 }
