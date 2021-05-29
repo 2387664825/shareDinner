@@ -3,49 +3,32 @@
 		<section class="data_section">
 			<header class="section_title">数据统计</header>
 			<el-row :gutter="20" style="margin-bottom: 10px;">
-                <el-col :span="4"><div class="data_list today_head"><span class="data_num head">当日数据：</span></div></el-col>
-				<el-col :span="4"><div class="data_list"><span class="data_num">{{userCount}}</span> 新增用户</div></el-col>
-				<el-col :span="4"><div class="data_list"><span class="data_num">{{orderCount}}</span> 新增商家</div></el-col>
-                <el-col :span="4"><div class="data_list"><span class="data_num">{{adminCount}}</span> 新增订单</div></el-col>
 			</el-row>
             <el-row :gutter="20">
-                <el-col :span="4"><div class="data_list all_head"><span class="data_num head">总数据：</span></div></el-col>
-                <el-col :span="4"><div class="data_list"><span class="data_num">{{allUserCount}}</span> 用户总量</div></el-col>
-                <el-col :span="4"><div class="data_list"><span class="data_num">{{allOrderCount}}</span> 商家总量</div></el-col>
-                <el-col :span="4"><div class="data_list"><span class="data_num">{{allAdminCount}}</span> 订单总量</div></el-col>
             </el-row>
 		</section>
-		<tendency :sevenDate='sevenDate' :sevenDay='sevenDay'></tendency>
+		<userMap :pieData='userData' ></userMap>
     </div>
 </template>
 
 <script>
-	import headTop from '../../components/headTop'
-	import tendency from '../../components/tendency'
+	import visitor from '../../components/visitorPie'
+    import userMap from '../../components/userMap'
 	import dtime from 'time-formater'
+	import {userCount, orderCount, getUserCount, getOrderCount, adminDayCount, adminCount} from '@/api/getData'
     export default {
     	data(){
     		return {
-    			userCount: 12,
-    			orderCount: 15,
-                adminCount: 16,
-                allUserCount: 17,
-                allOrderCount: 20,
-                allAdminCount: 2,
-    			sevenDay: [],
-    			sevenDate: [[112,54,83,16,127,100,66],[70,50,83,16,127,100,66],[60,160,200,16,127,50,10]],
+                userData: {beijing:10,shanghai:20,hangzhou:20,qita:20,shenzhen:20},
     		}
     	},
     	components: {
     		headTop,
-    		tendency,
+            visitor,
+            userMap
     	},
     	mounted(){
     		this.initData();
-    		for (let i = 6; i > -1; i--) {
-    			const date = dtime(new Date().getTime() - 86400000*i).format('YYYY-MM-DD')
-    			this.sevenDay.push(date)
-    		}
     		this.getSevenData();
     	},
     	methods: {

@@ -188,9 +188,6 @@
 </template>
 
 <script>
-    import headTop from '../../components/headTop'
-    import {baseUrl, baseImgPath} from '@/config/env'
-    import {getFoods, getMenu, updateFood, deleteFood, getResturantDetail, getMenuById} from '@/api/getData'
     export default {
         data(){
             return {
@@ -384,6 +381,15 @@
 
 <style lang="less">
 	@import '../../style/mixin';
+    .query{
+        margin: 20px 20px 0 20px;
+    }
+    .query .el-col {
+        min-height: 1px;
+    }
+    .query .el-button {
+        width: 100px;
+    }
     .demo-table-expand {
         font-size: 0;
     }

@@ -44,4 +44,7 @@ public class Back {
 
     @TableField(value = "type")
     private Integer type;
+
+    @TableField(value = "email")
+    private String email;
 }

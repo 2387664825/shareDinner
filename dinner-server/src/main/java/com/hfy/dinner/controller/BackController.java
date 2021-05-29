@@ -2,12 +2,11 @@ package com.hfy.dinner.controller;
 
 import com.hfy.dinner.consts.Const;
 import com.hfy.dinner.repository.dto.BackQueryDto;
+import com.hfy.dinner.repository.pojo.Back;
 import com.hfy.dinner.repository.pojo.ResponseDo;
 import com.hfy.dinner.service.BackService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author hfy
@@ -23,6 +22,11 @@ public class BackController {
     @GetMapping
     public ResponseDo query(BackQueryDto queryDto) {
         return new ResponseDo(backService.query(queryDto));
+    }
+
+    @PostMapping
+    public ResponseDo back(@RequestBody Back back){
+        return backService.update(back);
     }
 
 }

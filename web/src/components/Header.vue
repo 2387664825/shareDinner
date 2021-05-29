@@ -2,7 +2,7 @@
     <div class="header">
         <img src="http://localhost:8080/api/v1/image/get?path=logot.png" style="width: 50px;height:50px;display: inline-block;padding-top: 10px">
         <span style="position: absolute;top:20px;left:100px">共享晚餐后台管理系统</span>
-        <el-dropdown  style="float:right;padding-top: 20px" @command="handleCommand" menu-align='start'>
+        <el-dropdown  style="float:right;padding-top: 20px"  menu-align='start'>
             <img src="http://localhost:8080/api/v1/image/get?path=tx.jpg" class="avator">
             <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="home">首页</el-dropdown-item>

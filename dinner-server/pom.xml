@@ -61,6 +61,11 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.75</version>
         </dependency>
+        <!-- 邮箱 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
         <!-- shiro -->
         <dependency>
             <groupId>org.apache.shiro</groupId>
@@ -70,12 +75,18 @@
         <!-- 工具包 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang</artifactId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>4.3.8.RELEASE</version>
         </dependency>
     </dependencies>
 

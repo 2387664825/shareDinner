@@ -52,6 +52,9 @@ public class User {
     @TableField(value = "city")
     private String city;
 
+    @TableField(value = "picture")
+    private String picture;
+
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @TableField(value = "login_time")

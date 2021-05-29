@@ -11,45 +11,24 @@
             </el-col>
             <el-col :span="8">
                 状态：
-                <el-input
-                    placeholder="请输入内容"
-                    prefix-icon="el-icon-search"
-                    v-model="query.city" style="width:190px;">
-                </el-input>
+                <el-select v-model="query.type" placeholder="请选择">
+                    <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                    </el-option>
+                </el-select>
             </el-col>
             <el-col :span="8">
-                <el-button type="primary"  @click="getFoods">查询</el-button>
+                <el-button type="primary"  @click="getBacks">查询</el-button>
                 <el-button type="primary"  @click="resetData" plain>重置</el-button>
             </el-col>
         </el-row>
         <div class="table_container">
             <el-table
                 :data="tableData"
-                @expand='expand'
-                :expand-row-keys='expendRow'
-                :row-key="row => row.index"
                 style="width: 100%">
-                <el-table-column type="expand">
-                  <template slot-scope="props">
-                    <el-form label-position="left" inline class="demo-table-expand">
-                      <el-form-item label="用户名称">
-                        <span>{{ props.row.familyName }}</span>
-                      </el-form-item>
-                      <el-form-item label="内容">
-                        <span>{{ props.row.id }}</span>
-                      </el-form-item>
-                      <el-form-item label="创建时间">
-                        <span>{{ props.row.familyId }}</span>
-                      </el-form-item>
-                      <el-form-item label="官方反馈">
-                        <span>{{ props.row.description }}</span>
-                      </el-form-item>
-                      <el-form-item label="反馈时间">
-                        <span>{{ props.row.restaurant_address }}</span>
-                      </el-form-item>
-                    </el-form>
-                  </template>
-                </el-table-column>
                 <el-table-column
                     type="index"
                     width="100px">
@@ -75,11 +54,13 @@
                   <template slot-scope="scope">
                     <el-button
                       size="small"
-                      @click="handleEdit(scope.row)">编辑</el-button>
-                    <el-button
-                      size="small"
-                      type="danger"
-                      @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                      type="primary"
+                      v-if="!scope.row.type"
+                      @click="handleEdit(scope.row,true)">处理</el-button>
+                      <el-button
+                          size="small"
+                          v-if="scope.row.type"
+                          @click="handleEdit(scope.row,false)">详情</el-button>
                   </template>
                 </el-table-column>
             </el-table>
@@ -88,107 +69,58 @@
                   @size-change="handleSizeChange"
                   @current-change="handleCurrentChange"
                   :current-page="currentPage"
-                  :page-size="20"
+                  :page-size="15"
                   layout="total, prev, pager, next"
                   :total="count">
                 </el-pagination>
             </div>
-            <el-dialog title="修改食品信息" v-model="dialogFormVisible">
+            <el-dialog title="工单处理" v-model="dialogFormVisible">
                 <el-form :model="selectTable">
-                    <el-form-item label="食品名称" label-width="100px">
-                        <el-input v-model="selectTable.name" auto-complete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="食品介绍" label-width="100px">
-                        <el-input v-model="selectTable.description"></el-input>
-                    </el-form-item>
-                    <el-form-item label="食品分类" label-width="100px">
-	                    <el-select v-model="selectIndex" :placeholder="selectMenu.label" @change="handleSelect">
-						    <el-option
-						      v-for="item in menuOptions"
-						      :key="item.value"
-						      :label="item.label"
-						      :value="item.index">
-						    </el-option>
-						</el-select>
-                    </el-form-item>
-                    <el-form-item label="食品图片" label-width="100px">
-                        <el-upload
-                          class="avatar-uploader"
-                          :action="baseUrl + '/v1/addimg/food'"
-                          :show-file-list="false"
-                          :on-success="handleServiceAvatarScucess"
-                          :before-upload="beforeAvatarUpload">
-                          <img v-if="selectTable.image_path" :src="baseImgPath + selectTable.image_path" class="avatar">
-                          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                        </el-upload>
-                    </el-form-item>
+                    <el-row class="query">
+                        <el-col :span="12">
+                            <el-form-item label="用户名称：" label-width="100px">
+                                <label :title="selectTable.userName" style="display:inline-block;width: 400px;">{{selectTable.userName}}</label>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="用户邮箱：" label-width="100px">
+                                <label :title="selectTable.email" style="display:inline-block;width: 400px;">{{selectTable.email}}</label>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="创建时间：" label-width="100px">
+                                <label :title="selectTable.createTime" style="display:inline-block;width: 400px;">{{selectTable.createTime}}</label>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="24" >
+                            <el-form-item label="内容：" label-width="100px">
+                                <label :title="selectTable.content" style="display:inline-block;width: 400px;">{{selectTable.content}}</label>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="24" >
+                            <el-form-item v-if="!falg" label="回复内容：" label-width="100px">
+                                <label :title="selectTable.backContent" style="display:inline-block;width: 400px;">{{selectTable.backContent}}</label>
+                            </el-form-item>
+                            <el-form-item label="回复：" label-width="100px"  v-if="falg">
+                                <el-input v-model="selectTable.backContent"  type="textarea" :rows="3" :max='300' style="width: 400px;"  show-word-lmit></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
                 </el-form>
-                <el-row style="overflow: auto; text-align: center;">
-	                <el-table
-				    :data="specs"
-				    style="margin-bottom: 20px;"
-				    :row-class-name="tableRowClassName">
-					    <el-table-column
-					      prop="specs"
-					      label="规格">
-					    </el-table-column>
-					    <el-table-column
-					      prop="packing_fee"
-					      label="包装费">
-					    </el-table-column>
-					    <el-table-column
-					      prop="price"
-					      label="价格">
-					    </el-table-column>
-					    <el-table-column label="操作" >
-					    <template slot-scope="scope">
-					        <el-button
-					          size="small"
-					          type="danger"
-					          @click="deleteSpecs(scope.$index)">删除</el-button>
-					    </template>
-					    </el-table-column>
-					</el-table>
-					<el-button type="primary" @click="specsFormVisible = true" style="margin-bottom: 10px;">添加规格</el-button>
-				</el-row>
-              <div slot="footer" class="dialog-footer">
+              <div slot="footer" class="dialog-footer" v-if="falg">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="updateFood">确 定</el-button>
+                <el-button type="primary" @click="updateBack">确 定</el-button>
               </div>
             </el-dialog>
-
-
-            <el-dialog title="添加规格" v-model="specsFormVisible">
-			  	<el-form :rules="specsFormrules" :model="specsForm">
-				    <el-form-item label="规格" label-width="100px" prop="specs">
-				     	<el-input v-model="specsForm.specs" auto-complete="off"></el-input>
-				    </el-form-item>
-				    <el-form-item label="包装费" label-width="100px">
-						<el-input-number v-model="specsForm.packing_fee" :min="0" :max="100"></el-input-number>
-					</el-form-item>
-					<el-form-item label="价格" label-width="100px">
-						<el-input-number v-model="specsForm.price" :min="0" :max="10000"></el-input-number>
-					</el-form-item>
-			  	</el-form>
-			  <div slot="footer" class="dialog-footer">
-			    <el-button @click="specsFormVisible = false">取 消</el-button>
-			    <el-button type="primary" @click="addspecs">确 定</el-button>
-			  </div>
-			</el-dialog>
         </div>
     </div>
 </template>
 
 <script>
-    import headTop from '../../components/headTop'
-    import {baseUrl, baseImgPath} from '@/config/env'
-    import {getFoods, getMenu, updateFood, deleteFood, getResturantDetail, getMenuById} from '@/api/getData'
     export default {
         data(){
             return {
-                query:{name:'',city:'',loginBeginTime:'',loginEndTime:'',type:'',},
-                restaurant_id: null,
-                city: {},
+                query:{name:'',type:'',},
                 offset: 0,
                 limit: 15,
                 count: 0,
@@ -196,21 +128,7 @@
                 currentPage: 1,
                 selectTable: {},
                 dialogFormVisible: false,
-                menuOptions: [],
-                selectMenu: {},
-                selectIndex: null,
-                specsForm: {
-		          	specs: '',
-		          	packing_fee: 0,
-		          	price: 20,
-		        },
-                specsFormrules: {
-		        	specs: [
-						{ required: true, message: '请输入规格', trigger: 'blur' },
-					],
-		        },
-		        specsFormVisible: false,
-                expendRow: [],
+                falg:true,
                 options: [{
                     value: '0',
                     label: '未反馈'
@@ -221,34 +139,21 @@
             }
         },
         created(){
-            this.getFoods();
-        },
-        computed: {
-        	specs: function (){
-        		let specs = [];
-        		if (this.selectTable.specfoods) {
-	        		this.selectTable.specfoods.forEach(item => {
-	        			specs.push({
-	        				specs: item.specs_name,
-	        				packing_fee: item.packing_fee,
-	        				price: item.price,
-	        			})
-	        		})
-        		}
-        		return specs
-        	}
+            this.getBacks();
         },
     	components: {
     		headTop,
     	},
         methods: {
-            getFoods(){
+            getBacks(){
                 const url = window.fdConfig.url.feature.back;
                 var params={
                     offset:this.offset,
                     limit:this.limit
                 };
                 const _this = this;
+                if(this.query.name){params.name = this.query.name;}
+                if(this.query.type){params.type = this.query.type;}
                 this.$http.get(url,{
                     params:params
                 }).then(function(res){
@@ -263,129 +168,75 @@
                     console.log('请求失败处理');
                 });
             },
-            tableRowClassName(row, index) {
-		        if (index === 1) {
-		        	return 'info-row';
-		        } else if (index === 3) {
-		        	return 'positive-row';
-		        }
-		        return '';
-		    },
-		    addspecs(){
-				this.specs.push({...this.specsForm});
-				this.specsForm.specs = '';
-				this.specsForm.packing_fee = 0;
-				this.specsForm.price = 20;
-				this.specsFormVisible = false;
-			},
-			deleteSpecs(index){
-				this.specs.splice(index, 1);
-			},
+            resetData(){
+              this.query = {};
+              this.getBacks();
+            },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
             },
             handleCurrentChange(val) {
                 this.currentPage = val;
                 this.offset = (val - 1)*this.limit;
-                this.getFoods()
+                this.getBacks()
             },
             expand(row, status){
-            	if (status) {
-            		this.getSelectItemData(row)
-            	}else{
-                    const index = this.expendRow.indexOf(row.index);
-                    this.expendRow.splice(index, 1)
-                }
+                const index = this.expendRow.indexOf(row.index);
+                this.expendRow.splice(index, 1)
             },
-            handleEdit(row) {
-            	this.getSelectItemData(row, 'edit');
+            handleEdit(row,falg) {
+                this.selectTable = Object.assign({},row);
                 this.dialogFormVisible = true;
+                this.falg = falg;
             },
-            async getSelectItemData(row, type){
-            	const restaurant = await getResturantDetail(row.restaurant_id);
-            	const category = await getMenuById(row.category_id);
-                this.selectTable = {...row, ...{restaurant_name: restaurant.name, restaurant_address: restaurant.address, category_name: category.name}};
-
-                this.selectMenu = {label: category.name, value: row.category_id};
-                this.tableData.splice(row.index, 1, {...this.selectTable});
-                this.$nextTick(() => {
-                    this.expendRow.push(row.index);
-                });
-                if (type == 'edit' && this.restaurant_id != row.restaurant_id) {
-                	this.getMenu();
+            updateBack(){
+                const url = window.fdConfig.url.feature.back;
+                const _this = this;
+                var data = {
+                    id:this.selectTable.id,
+                    backContent:this.selectTable.backContent,
+                    email:this.selectTable.email
                 }
-            },
-            handleSelect(index){
-            	this.selectIndex = index;
-            	this.selectMenu = this.menuOptions[index];
-            },
-            async handleDelete(index, row) {
-                try{
-                    const res = await deleteFood(row.item_id);
-                    if (res.status == 1) {
-                        this.$message({
-                            type: 'success',
-                            message: '删除食品成功'
+                this.$http.post(url,data
+                ).then(function(res){
+                    const data  = res.body;
+                    if(data.status === 200) {
+                        this.$notify({
+                            title: '成功',
+                            message: '回复成功',
+                            type: 'success'
                         });
-                        this.tableData.splice(index, 1);
+                        _this.dialogFormVisible = false;
+                        _this.getBacks();
                     }else{
-                        throw new Error(res.message)
+                        this.$notify.error({
+                            title: '错误',
+                            message: data.data
+                        });
                     }
-                }catch(err){
-                    this.$message({
-                        type: 'error',
-                        message: err.message
+                },function(){
+                    this.$notify.error({
+                        title: '错误',
+                        message: '操作错误'
                     });
-                    console.log('删除食品失败')
-                }
-            },
-            handleServiceAvatarScucess(res, file) {
-                if (res.status === 1) {
-                    this.selectTable.image_path = res.image_path;
-                }else{
-                    this.$message.error('上传图片失败！');
-                }
-            },
-            beforeAvatarUpload(file) {
-                const isRightType = (file.type === 'image/jpeg') || (file.type === 'image/png');
-                const isLt2M = file.size / 1024 / 1024 < 2;
+                });
+            }
 
-                if (!isRightType) {
-                    this.$message.error('上传头像图片只能是 JPG 格式!');
-                }
-                if (!isLt2M) {
-                    this.$message.error('上传头像图片大小不能超过 2MB!');
-                }
-                return isRightType && isLt2M;
-            },
-            async updateFood(){
-                this.dialogFormVisible = false;
-                try{
-                	const subData = {new_category_id: this.selectMenu.value, specs: this.specs};
-                	const postData = {...this.selectTable, ...subData};
-                    const res = await updateFood(postData);
-                    if (res.status === 1) {
-                        this.$message({
-                            type: 'success',
-                            message: '更新食品信息成功'
-                        });
-                        this.getFoods();
-                    }else{
-                        this.$message({
-                            type: 'error',
-                            message: res.message
-                        });
-                    }
-                }catch(err){
-                    console.log('更新餐馆信息失败', err);
-                }
-            },
         },
     }
 </script>
 
 <style lang="less">
 	@import '../../style/mixin';
+    .query{
+        margin: 20px 20px 0 20px;
+    }
+    .query .el-col {
+        min-height: 1px;
+    }
+    .query .el-button {
+        width: 100px;
+    }
     .demo-table-expand {
         font-size: 0;
     }

@@ -33,7 +33,7 @@
                         trigger: 'axis'
                     },
                     legend: {
-                        data:['新注册用户', '新增订单', '新增管理员']
+                        data:['新增用户', '新增商家', '新增订单']
                     },
                     toolbox: {
                         show: true,
@@ -85,7 +85,7 @@
                     ],
                     series: [
                         {
-                            name:'新注册用户',
+                            name:'新增用户',
                             type:'line',
                             data:this.sevenDate[0],
                             yAxisIndex: 1,
@@ -97,7 +97,7 @@
                             },
                         },
                         {
-                            name:'新增订单',
+                            name:'新增商家',
                             type:'line',
                             data:this.sevenDate[1],
                             yAxisIndex: 1,
@@ -109,7 +109,7 @@
                             },
                         },
                         {
-                            name:'新增管理员',
+                            name:'新增订单',
                             type:'line',
                             data:this.sevenDate[2],
                             yAxisIndex: 1,

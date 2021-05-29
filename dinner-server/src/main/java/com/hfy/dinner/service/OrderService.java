@@ -36,7 +36,7 @@ public class OrderService {
     public PageInfo<OrderVo> getOrderList(OrderQueryDto queryDto) {
         int page=queryDto.getOffset() / queryDto.getLimit()+1;
         PageHelper.startPage(page, queryDto.getLimit());
-        List<Order> orders = orderDao.selectList(new QueryWrapper<>());
+        List<Order> orders = orderDao.selectByDto(queryDto);
         PageInfo orderPageInfo = new PageInfo<>(orders);
         orderPageInfo.setList(convertVo(orders));
         return orderPageInfo;

@@ -8,6 +8,6 @@ import lombok.Data;
  */
 @Data
 public class BackQueryDto extends PageBase {
-    public String name;
-
+    private String name;
+    private Integer type;
 }

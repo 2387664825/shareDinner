@@ -59,21 +59,24 @@
 			    <el-table-column type="expand">
 			      <template slot-scope="props">
 			        <el-form label-position="left" inline class="demo-table-expand">
-			          <el-form-item label="用户名" >
-			            <span>{{ props.row.user_name }}</span>
+			          <el-form-item label="用户名：" >
+			            <span>{{ props.row.userName }}</span>
 			          </el-form-item>
-			          <el-form-item label="店铺名称">
-			            <span>{{ props.row.restaurant_name }}</span>
+			          <el-form-item label="店铺名称：">
+			            <span>{{ props.row.familyName }}</span>
 			          </el-form-item>
-			          <el-form-item label="收货地址">
-			            <span>{{ props.row.address }}</span>
+			          <el-form-item label="价格：">
+			            <span>{{ props.row.price }}</span>
 			          </el-form-item>
-			          <el-form-item label="店铺 ID">
-			            <span>{{ props.row.restaurant_id }}</span>
+			          <el-form-item label="时间：">
+			            <span>{{ props.row.createTime }}</span>
 			          </el-form-item>
-			          <el-form-item label="店铺地址">
-			            <span>{{ props.row.restaurant_address }}</span>
+			          <el-form-item label="店铺地址：">
+			            <span>{{ props.row.location }}</span>
 			          </el-form-item>
+                        <el-form-item label="订单状态：">
+                            <span>{{ props.row.statusValue }}</span>
+                        </el-form-item>
 			        </el-form>
 			      </template>
 			    </el-table-column>
@@ -118,7 +121,7 @@
 
 <script>
     import headTop from '../../components/headTop'
-    import {getOrderList, getOrderCount, getResturantDetail, getUserInfo, getAddressById} from '@/api/getData'
+    import util from '../../util/util.js'
     export default {
         data(){
             return {
@@ -132,6 +135,9 @@
                 restaurant_id: null,
                 expendRow: [],
                 options: [{
+                    value: '0',
+                    label: '已取消'
+                }, {
                     value: '1',
                     label: '已预约'
                 }, {
@@ -165,12 +171,23 @@
                 this.offset = (val - 1)*this.limit;
                 this.getOrders()
             },
+            resetData(){
+              this.query = {userName:'',familyName:'',beginTime:'',endTime:'',type:''}
+              this.getOrders();
+            },
             getOrders(){
                 const url = window.fdConfig.url.feature.order;
                 var params={
                     offset:this.offset,
                     limit:this.limit
                 };
+                console.log("时间：",this.query.beginTime);
+                if(this.query.userName!==''){params.userName = this.query.userName;}
+                if(this.query.familyName!==''){params.familyName = this.query.familyName;}
+                if(this.query.beginTime){params.beginTime = util.dateFtt("yyyy-MM-dd",this.query.beginTime);}
+                if(this.query.endTime){params.endTime = util.dateFtt("yyyy-MM-dd",this.query.endTime);}
+                if(this.query.type!==''){params.type = this.query.type;}
+                console.log(params)
                 const _this = this;
                 this.$http.get(url,{
                     params:params
@@ -179,7 +196,7 @@
                     console.log('订单列表',data);
                     _this.count = data.pageInfo.rowCount;
                     for(var i =0 ;i<data.data.length;i++){
-                        data.data[i].statusValue = _this.options[data.data[i].status - 1].label;
+                        data.data[i].statusValue = _this.options[data.data[i].status].label;
                     }
                     _this.tableData = data.data;
                 },function(){
@@ -201,7 +218,7 @@
                     this.expendRow.splice(index, 1)
                 }
             },
-        },
+        }
     }
 </script>
 
@@ -222,4 +239,13 @@
 	    margin-bottom: 0;
 	    width: 50%;
 	}
+    .query{
+        margin: 20px 20px 0 20px;
+    }
+    .query .el-col {
+        min-height: 1px;
+    }
+    .query .el-button {
+        width: 100px;
+    }
 </style>

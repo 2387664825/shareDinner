@@ -49,8 +49,6 @@
 </template>
 
 <script>
-    import headTop from '../../components/headTop'
-    import {adminList, adminCount} from '@/api/getData'
     export default {
         data(){
             return {
@@ -106,6 +104,15 @@
 	@import '../../style/mixin';
     .table_container{
         padding: 20px;
+    }
+    .query{
+        margin: 20px 20px 0 20px;
+    }
+    .query .el-col {
+        min-height: 1px;
+    }
+    .query .el-button {
+        width: 100px;
     }
 </style>
 

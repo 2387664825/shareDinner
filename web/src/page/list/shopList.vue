@@ -179,8 +179,6 @@
 
 <script>
     import headTop from '../../components/headTop'
-    import {baseUrl, baseImgPath} from '@/config/env'
-    import {cityGuess, getResturants, getResturantsCount, foodCategory, updateResturant, searchplace, deleteResturant} from '@/api/getData'
     export default {
         data(){
             return {

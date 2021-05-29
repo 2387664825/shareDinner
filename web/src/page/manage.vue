@@ -3,12 +3,12 @@
         <el-header>
             <header-Top></header-Top>
         </el-header>
-        <el-main>
             <div class="manage_page fillcontain">
                 <el-row style="height: 100%;">
                     <el-col :span="4"  style="height: 100%; background-color: #324057;">
                         <el-menu :default-active="defaultActive" style="min-height: 100%;" theme="dark" router>
                             <el-menu-item index="manage"><i class="el-icon-menu"></i>首页</el-menu-item>
+                            <el-menu-item index="userFb"><i class="el-icon-menu"></i>用户分布</el-menu-item>
                             <el-menu-item index="userList"><i class="el-icon-menu"></i>用户列表</el-menu-item>
                             <el-menu-item index="shopList"><i class="el-icon-menu"></i>商家列表</el-menu-item>
                             <el-menu-item index="foodList"><i class="el-icon-menu"></i>食品列表</el-menu-item>
@@ -24,7 +24,6 @@
                     </el-col>
                 </el-row>
             </div>
-        </el-main>
     </el-container>
 </template>
 
