@@ -34,10 +34,21 @@ public class UserService {
         int page=queryDto.getOffset() / queryDto.getLimit()+1;
         PageHelper.startPage(page, queryDto.getLimit());
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        if(queryDto.getName() != null && !"".equals(queryDto.getName()))
-            queryWrapper.like("name",queryDto.getName());
-        if(queryDto.getType() != null)
-            queryWrapper.eq("type",queryDto.getType());
+        if(queryDto.getName() != null && !"".equals(queryDto.getName())) {
+            queryWrapper.like("name", queryDto.getName());
+        }
+        if(queryDto.getCity() != null && !"".equals(queryDto.getCity())) {
+            queryWrapper.like("city", queryDto.getCity());
+        }
+        if(queryDto.getType() != null) {
+            queryWrapper.eq("type", queryDto.getType());
+        }
+        if(queryDto.getLoginBeginTime()!=null){
+            queryWrapper.ge("login_time",queryDto.getLoginBeginTime());
+        }
+        if(queryDto.getLoginEndTime()!=null){
+            queryWrapper.le("login_time",queryDto.getLoginEndTime());
+        }
         List<User> users = userDao.selectList(queryWrapper);
         return new PageInfo<User>(users);
     }

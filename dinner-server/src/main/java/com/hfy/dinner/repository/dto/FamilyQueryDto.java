@@ -8,4 +8,7 @@ import lombok.Data;
  */
 @Data
 public class FamilyQueryDto extends PageBase{
+    private String name;
+    private String city;
+    private String type;
 }

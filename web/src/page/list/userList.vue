@@ -162,6 +162,8 @@
 </template>
 
 <script>
+    import headTop from '../../components/headTop'
+    import util from '../../util/util.js'
     export default {
         data(){
             return {
@@ -207,12 +209,19 @@
               this.getUsers();
             },
             getUsers(){
-                this.query.offset = this.offset;
-                this.query.limit = this.limit;
+                var params={
+                    offset:this.offset,
+                    limit:this.limit
+                };
                 const url = window.fdConfig.url.feature.user;
                 const _this = this;
+                if(this.query.name!==''){params.name = this.query.name;}
+                if(this.query.city!==''){params.city = this.query.city;}
+                if(this.query.loginBeginTime){params.loginBeginTime = util.dateFtt("yyyy-MM-dd",this.query.loginBeginTime);}
+                if(this.query.loginEndTime){params.loginEndTime = util.dateFtt("yyyy-MM-dd",this.query.loginEndTime);}
+                if(this.query.type!==''){params.type = this.query.type;}
                 this.$http.get(url,{
-                    params:_this.query
+                    params:params
                 }).then(function(res){
                     const data = res.body;
                     _this.count = data.pageInfo.rowCount;

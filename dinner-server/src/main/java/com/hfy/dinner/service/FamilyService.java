@@ -39,7 +39,17 @@ public class FamilyService {
     public PageInfo<?> query(FamilyQueryDto queryDto) {
         int page = queryDto.getOffset() / queryDto.getLimit() + 1;
         PageHelper.startPage(page, queryDto.getLimit());
-        List<Family> families = familyDao.selectByMap(new HashMap<>());
+        QueryWrapper<Family> queryWrapper = new QueryWrapper<>();
+        if(queryDto.getName() != null && !"".equals(queryDto.getName())) {
+            queryWrapper.like("name", queryDto.getName());
+        }
+        if(queryDto.getCity() != null && !"".equals(queryDto.getCity())) {
+            queryWrapper.like("location", queryDto.getCity());
+        }
+        if(queryDto.getType() != null) {
+            queryWrapper.eq("status", queryDto.getType());
+        }
+        List<Family> families = familyDao.selectList(queryWrapper);
         for (Family family : families) {
             family.setStatusT(status.get(family.getStatus()));
         }

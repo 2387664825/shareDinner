@@ -37,6 +37,6 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 <!-- 对应数据库中的表-->
-        <table tableName="user_order" domainObjectName="Order2" enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableCountByExample="false"/>
+        <table tableName="food" domainObjectName="food2" enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableCountByExample="false"/>
     </context>
 </generatorConfiguration>

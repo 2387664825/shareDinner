@@ -181,13 +181,11 @@
                     offset:this.offset,
                     limit:this.limit
                 };
-                console.log("时间：",this.query.beginTime);
                 if(this.query.userName!==''){params.userName = this.query.userName;}
                 if(this.query.familyName!==''){params.familyName = this.query.familyName;}
                 if(this.query.beginTime){params.beginTime = util.dateFtt("yyyy-MM-dd",this.query.beginTime);}
                 if(this.query.endTime){params.endTime = util.dateFtt("yyyy-MM-dd",this.query.endTime);}
                 if(this.query.type!==''){params.type = this.query.type;}
-                console.log(params)
                 const _this = this;
                 this.$http.get(url,{
                     params:params
@@ -197,6 +195,7 @@
                     _this.count = data.pageInfo.rowCount;
                     for(var i =0 ;i<data.data.length;i++){
                         data.data[i].statusValue = _this.options[data.data[i].status].label;
+                        data.data[i].price +='元';
                     }
                     _this.tableData = data.data;
                 },function(){

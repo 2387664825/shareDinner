@@ -39,7 +39,7 @@ public class FoodService {
     public PageInfo<FoodVo> getFoodList(FoodQueryDto queryDto) {
         int page=queryDto.getOffset() / queryDto.getLimit()+1;
         PageHelper.startPage(page, queryDto.getLimit());
-        List<Food> foodList = foodDao.selectList(new QueryWrapper<>());
+        List<Food> foodList = foodDao.selectByDto(queryDto);
         PageInfo foodPageInfo = new PageInfo<>(foodList);
         List<FoodVo> foodVos = new ArrayList<>();
         for (Food food : foodList) {

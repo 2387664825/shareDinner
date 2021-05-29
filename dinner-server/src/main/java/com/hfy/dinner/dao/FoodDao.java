@@ -1,6 +1,7 @@
 package com.hfy.dinner.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hfy.dinner.repository.dto.FoodQueryDto;
 import com.hfy.dinner.repository.pojo.Food;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -19,4 +20,6 @@ public interface FoodDao extends BaseMapper<Food> {
 
     @Select("select * from food where family_id = #{familyId} ")
     List<Food> selectBYFamilyId(Integer familydId);
+
+    List<Food> selectByDto(FoodQueryDto queryDto);
 }

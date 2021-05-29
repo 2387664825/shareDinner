@@ -133,26 +133,10 @@
                         <label >{{selectTable.phone}}</label>
                     </el-form-item>
                     <el-form-item label="商铺图片：" label-width="100px">
-                        <el-upload
-                          class="avatar-uploader"
-                          :action="baseUrl + '/v1/addimg/shop'"
-                          :show-file-list="false"
-                          :on-success="handleServiceAvatarScucess"
-                          :before-upload="beforeAvatarUpload">
-                          <img v-if="selectTable.imgLocation" :src="selectTable.imgLocation" class="avatar">
-                          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                        </el-upload>
+                          <img  :src="selectTable.imgLocation" class="avatar">
                     </el-form-item>
                     <el-form-item label="卫生证：" label-width="100px">
-                        <el-upload
-                            class="avatar-uploader"
-                            :action="baseUrl + '/v1/addimg/shop'"
-                            :show-file-list="false"
-                            :on-success="handleServiceAvatarScucess"
-                            :before-upload="beforeAvatarUpload">
-                            <img v-if="selectTable.jkz" :src="selectTable.jkz" class="avatar">
-                            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                        </el-upload>
+                        <img  :src="selectTable.jkz" class="avatar">
                     </el-form-item>
                     <el-form-item label="审批意见：" label-width="100px">
                         <el-select v-model="sp.type" placeholder="请选择">
@@ -182,7 +166,7 @@
     export default {
         data(){
             return {
-                query:{name:'',city:'',loginBeginTime:'',loginEndTime:'',type:'',},
+                query:{name:'',city:'',type:'',},
                 offset: 0,
                 limit: 15,
                 count: 0,
@@ -227,6 +211,9 @@
                     limit:this.limit
                 };
                const _this = this;
+                 if(this.query.name!==''){params.name = this.query.name;}
+                 if(this.query.city!==''){params.city = this.query.city;}
+                 if(this.query.type!==''){params.type = this.query.type;}
                  this.$http.get(url,{
                      params:params
                  }).then(function(res){
@@ -240,6 +227,10 @@
                  },function(){
                      console.log('请求失败处理');
                  });
+            },
+            resetData(){
+              this.query = {};
+              this.getShop();
             },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
@@ -257,48 +248,32 @@
             toFoodList(index, row){
                 this.$router.push({ path: 'addGoods', query: { restaurant_id: row.id }})
             },
-            async handleDelete(index, row) {
-                try{
-                    const res = await deleteResturant(row.id);
-                    if (res.status == 1) {
-                        this.$message({
-                            type: 'success',
-                            message: '删除店铺成功'
-                        });
-                        this.tableData.splice(index, 1);
-                    }else{
-                        throw new Error(res.message)
-                    }
-                }catch(err){
-                    this.$message({
-                        type: 'error',
-                        message: err.message
-                    });
-                    console.log('删除店铺失败')
-                }
+            handleDelete(index, row) {
+                // try{
+                //     const res = await deleteResturant(row.id);
+                //     if (res.status == 1) {
+                //         this.$message({
+                //             type: 'success',
+                //             message: '删除店铺成功'
+                //         });
+                //         this.tableData.splice(index, 1);
+                //     }else{
+                //         throw new Error(res.message)
+                //     }
+                // }catch(err){
+                //     this.$message({
+                //         type: 'error',
+                //         message: err.message
+                //     });
+                //     console.log('删除店铺失败')
+                // }
+            },
+            updateShop(){
+
             },
             addressSelect(vale){
                 const {address, latitude, longitude} = vale;
                 this.address = {address, latitude, longitude};
-            },
-            handleServiceAvatarScucess(res, file) {
-                if (res.status == 1) {
-                    this.selectTable.image_path = res.image_path;
-                }else{
-                    this.$message.error('上传图片失败！');
-                }
-            },
-            beforeAvatarUpload(file) {
-                const isRightType = (file.type === 'image/jpeg') || (file.type === 'image/png');
-                const isLt2M = file.size / 1024 / 1024 < 2;
-
-                if (!isRightType) {
-                    this.$message.error('上传头像图片只能是 JPG 格式!');
-                }
-                if (!isLt2M) {
-                    this.$message.error('上传头像图片大小不能超过 2MB!');
-                }
-                return isRightType && isLt2M;
             }
         },
     }
