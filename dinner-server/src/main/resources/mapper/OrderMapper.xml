@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hfy.dinner.dao.OrderDao">
+  <resultMap id="BaseResultMap" type="com.hfy.dinner.repository.pojo.Order">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="family_id" jdbcType="INTEGER" property="familyId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="status" jdbcType="BIT" property="status" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="valid_time" jdbcType="TIMESTAMP" property="validTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ord.id, ord.family_id, ord.user_id, ord.create_time, ord.status, ord.price, ord.valid_time
+  </sql>
+  <select id="selectByDto" parameterType="com.hfy.dinner.repository.dto.OrderQueryDto" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_order ord join user on ord.user_id = user.id join family on ord.family_id = family.id
+    <where>
+      <if test="userName != null and userName != ''">
+        and user.name like '%${userName}%'
+      </if>
+      <if test="familyName != null and familyName != '' ">
+        AND family.name like '%${familyName}%'
+      </if>
+      <if test="type != null ">
+        AND ord.status = #{type}
+      </if>
+      <if test="beginTime != null ">
+        AND ord.create_time &gt; #{beginTime}
+      </if>
+      <if test="endTime != null ">
+        AND ord.create_time &lt; #{endTime}
+      </if>
+    </where>
+    order by create_time desc
+  </select>
+</mapper>
