@@ -66,6 +66,30 @@
                 </el-pagination>
             </div>
         </div>
+        <el-dialog title="食品编辑" v-model="dialogFormVisible" >
+            <el-form :model="selectTable">
+                <el-form-item label="食品名称：" label-width="100px">
+                    <el-input v-model="selectTable.name"  type="text" :max='15'  style="width: 200px;" show-word-lmit></el-input>
+                </el-form-item>
+                <el-form-item label="详细地址：" label-width="100px">
+                    <label >{{selectTable.location}}</label>
+                    <!--<span>当前城市：{{city.name}}</span>-->
+                </el-form-item>
+                <el-form-item label="店铺介绍：" label-width="100px">
+                    <label >{{selectTable.js}}</label>
+                </el-form-item>
+                <el-form-item label="联系电话：" label-width="100px">
+                    <label >{{selectTable.phone}}</label>
+                </el-form-item>
+                <el-form-item label="商铺图片：" label-width="100px">
+                    <img  :src="selectTable.imgLocation" class="avatar">
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="updateShop">保 存</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 

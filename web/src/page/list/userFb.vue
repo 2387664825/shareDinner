@@ -12,6 +12,7 @@
 </template>
 
 <script>
+    import headTop from '../../components/headTop'
 	import visitor from '../../components/visitorPie'
     import userMap from '../../components/userMap'
 	import dtime from 'time-formater'
