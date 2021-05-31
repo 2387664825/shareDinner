@@ -51,4 +51,13 @@ public class OrderController {
             return new ResponseDo(500, "更改失败");
         }
     }
+
+    @GetMapping("/seven")
+    public ResponseDo getSevenDay(){
+        return new ResponseDo(200, orderService.getSevenDay());
+    }
+    @GetMapping("/indexData")
+    public ResponseDo getIndexData(){
+        return new ResponseDo(200,orderService.getIndexData());
+    }
 }

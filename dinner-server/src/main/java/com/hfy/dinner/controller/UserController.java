@@ -54,4 +54,13 @@ public class UserController {
         return new ResponseDo(userService.selectUserList(queryDto));
     }
 
+    @GetMapping("/fb")
+    public ResponseDo userFb(){
+        return new ResponseDo(200,userService.getUserFb());
+    }
+    @GetMapping("/sf")
+    public ResponseDo getProvince(){
+        return new ResponseDo(200,userService.getProvince());
+    }
+
 }

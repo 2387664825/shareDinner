@@ -47,7 +47,7 @@
                   <template slot-scope="scope">
                     <el-button
                       size="small"
-                      @click="handleEdit(scope.row)">编辑</el-button>
+                      @click="handle(scope.row)">详情</el-button>
                     <el-button
                       size="small"
                       type="danger"
@@ -66,29 +66,24 @@
                 </el-pagination>
             </div>
         </div>
-        <el-dialog title="食品编辑" v-model="dialogFormVisible" >
+        <el-dialog title="食品详情" v-model="dialogFormVisible" >
             <el-form :model="selectTable">
                 <el-form-item label="食品名称：" label-width="100px">
-                    <el-input v-model="selectTable.name"  type="text" :max='15'  style="width: 200px;" show-word-lmit></el-input>
+                    <label >{{selectTable.name}}</label>
                 </el-form-item>
-                <el-form-item label="详细地址：" label-width="100px">
-                    <label >{{selectTable.location}}</label>
-                    <!--<span>当前城市：{{city.name}}</span>-->
+                <el-form-item label="所属店铺：" label-width="100px">
+                    <label >{{selectTable.familyName}}</label>
                 </el-form-item>
-                <el-form-item label="店铺介绍：" label-width="100px">
+                <el-form-item label="店铺：" label-width="100px">
                     <label >{{selectTable.js}}</label>
                 </el-form-item>
                 <el-form-item label="联系电话：" label-width="100px">
                     <label >{{selectTable.phone}}</label>
                 </el-form-item>
-                <el-form-item label="商铺图片：" label-width="100px">
-                    <img  :src="selectTable.imgLocation" class="avatar">
+                <el-form-item label="食品图片：" label-width="100px">
+                    <img  :src="selectTable.picture" class="avatar">
                 </el-form-item>
             </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="updateShop">保 存</el-button>
-            </div>
         </el-dialog>
     </div>
 </template>
@@ -147,7 +142,8 @@
                 this.offset = (val - 1)*this.limit;
                 this.getFoods()
             },
-            handleEdit(row) {
+            handle(row) {
+                this.selectTable = row;
                 this.dialogFormVisible = true;
             },
              handleDelete(index, row) {

@@ -16,7 +16,7 @@
             this.myChart = echarts.init(document.getElementById('mapChart'));
             this.getMap();
         },
-        props: ['pieData'],
+        props: ['sevenDate'],
         methods: {
             getMap() {
                 const option = {
@@ -31,8 +31,8 @@
                     dataRange: {
                         show: true,
                         min: 0,
-                        max: 200,
-                        range: [0, 199],
+                        max: 100,
+                        range: [0, 100],
                         text: ['', ''],
                         realtime: false,
                         calculable: true,
@@ -45,7 +45,7 @@
                         itemHeight: '120',
                         left: 20,
                         bottom: 20,
-                        precision: 4  // 数据展示的小数精度
+                        precision: 0  // 数据展示的小数精度
                     },
                     geo: { // 这个是重点配置区
                         map: 'china', // 表示中国地图
@@ -77,7 +77,7 @@
                                 shadowColor: 'rgba(0, 0, 0, 0.5)'
                             }
                         },
-                        right: '200',
+                        right: '500',
                         left: 'auto',
                         bottom: '0'
                     },
@@ -90,7 +90,7 @@
                             name: '', // 浮动框的标题
                             type: 'map',
                             geoIndex: 0,
-                            data: [{name:'四川',value: 100},{name:'重庆',value: 80}]
+                            data: this.sevenDate
                         }
                     ]
                 };
@@ -98,9 +98,10 @@
             }
         },
         watch: {
-            // pieData: function () {
-            //     this.initData()
-            // }
+            sevenDate: function () {
+                console.log("初始化");
+                this.getMap()
+            }
         }
     }
 </script>

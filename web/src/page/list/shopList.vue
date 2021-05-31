@@ -99,7 +99,7 @@
                     <el-button
                         size="mini"
                         type="Success"
-                        @click="toFoodList(scope.$index, scope.row)">查看菜品</el-button>
+                        @click="toFoodList(scope.$index, scope.row)">详情</el-button>
                     <el-button
                         size="mini"
                         type="danger"
@@ -249,24 +249,6 @@
                 this.$router.push({ path: 'addGoods', query: { restaurant_id: row.id }})
             },
             handleDelete(index, row) {
-                // try{
-                //     const res = await deleteResturant(row.id);
-                //     if (res.status == 1) {
-                //         this.$message({
-                //             type: 'success',
-                //             message: '删除店铺成功'
-                //         });
-                //         this.tableData.splice(index, 1);
-                //     }else{
-                //         throw new Error(res.message)
-                //     }
-                // }catch(err){
-                //     this.$message({
-                //         type: 'error',
-                //         message: err.message
-                //     });
-                //     console.log('删除店铺失败')
-                // }
             },
             updateShop(){
 

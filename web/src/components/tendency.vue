@@ -84,34 +84,34 @@
                         },
                     ],
                     series: [
-                        {
-                            name:'新增用户',
-                            type:'line',
-                            data:this.sevenDate[0],
-                            yAxisIndex: 1,
-                            markPoint: {
-                                data: [
-                                    {type: 'max', name: '最大值'},
-                                    {type: 'min', name: '最小值'}
-                                ]
-                            },
-                        },
-                        {
-                            name:'新增商家',
-                            type:'line',
-                            data:this.sevenDate[1],
-                            yAxisIndex: 1,
-                            markPoint: {
-                                data: [
-                                    {type: 'max', name: '最大值'},
-                                    {type: 'min', name: '最小值'}
-                                ]
-                            },
-                        },
+                        // {
+                        //     name:'新增用户',
+                        //     type:'line',
+                        //     data:this.sevenDate[0],
+                        //     yAxisIndex: 1,
+                        //     markPoint: {
+                        //         data: [
+                        //             {type: 'max', name: '最大值'},
+                        //             {type: 'min', name: '最小值'}
+                        //         ]
+                        //     },
+                        // },
+                        // {
+                        //     name:'新增商家',
+                        //     type:'line',
+                        //     data:this.sevenDate[1],
+                        //     yAxisIndex: 1,
+                        //     markPoint: {
+                        //         data: [
+                        //             {type: 'max', name: '最大值'},
+                        //             {type: 'min', name: '最小值'}
+                        //         ]
+                        //     },
+                        // },
                         {
                             name:'新增订单',
                             type:'line',
-                            data:this.sevenDate[2],
+                            data:this.sevenDate,
                             yAxisIndex: 1,
                             markPoint: {
                                 data: [

@@ -21,4 +21,12 @@ public interface OrderDao extends BaseMapper<Order> {
     void updateByOrder(@Param(value = "userId") Integer userId, @Param(value = "familyId") Integer familyId);
 
     List<Order> selectByDto(OrderQueryDto queryDto);
+
+    @Select("select * from user_order where date_sub(curdate(),interval 7 day) <= date(create_time) order by create_time ")
+    List<Order> getSevenDay();
+
+    @Select("select count(*) from user_order where to_days(create_time) = to_days(now())")
+    Integer selectCountDay();
+    @Select("select count(*) from user_order")
+    Integer selectCountAll();
 }

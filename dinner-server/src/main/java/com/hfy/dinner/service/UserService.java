@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import com.hfy.dinner.dao.ChinaDao;
 import com.hfy.dinner.dao.UserDao;
 import com.hfy.dinner.repository.dto.UserQueryDto;
+import com.hfy.dinner.repository.pojo.China;
 import com.hfy.dinner.repository.pojo.ResponseDo;
 import com.hfy.dinner.repository.pojo.User;
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +16,7 @@ import org.springframework.util.CollectionUtils;
 
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +28,8 @@ import java.util.List;
 public class UserService {
     @Resource
     private UserDao userDao;
+    @Resource
+    private ChinaDao chinaDao;
 
     public ResponseDo getUser() {
         return new ResponseDo(200, userDao.selectById(10001));
@@ -72,5 +77,31 @@ public class UserService {
     public void updateUser(User user) {
         user.setLoginTime(new Date());
         userDao.updateById(user);
+    }
+
+    public int[] getUserFb() {
+        List<User> users = userDao.selectList(new QueryWrapper<>());
+        QueryWrapper<China> query = new QueryWrapper<>();
+        query.eq("pid",0);
+        List<China> chinas = chinaDao.selectList(query);
+        int[] fb = new int[chinas.size()];
+        for(int i =0 ;i<fb.length;i++){
+            fb[i] = 0;
+        }
+        for(int i = 0 ;i<chinas.size();i++){
+            for(User user:users){
+                if(user.getCity()!= null && user.getCity().contains(chinas.get(i).getName())){
+                    fb[i]++;
+                }
+            }
+        }
+        return fb;
+    }
+
+    public List<China> getProvince() {
+        QueryWrapper<China> query = new QueryWrapper<>();
+        query.eq("pid",0);
+        List<China> chinas = chinaDao.selectList(query);
+        return chinas;
     }
 }

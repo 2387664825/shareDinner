@@ -5,14 +5,14 @@
 			<el-row :gutter="20" style="margin-bottom: 10px;">
                 <el-col :span="4"><div class="data_list today_head"><span class="data_num head">当日数据：</span></div></el-col>
 				<el-col :span="4"><div class="data_list"><span class="data_num">{{userCount}}</span> 新增用户</div></el-col>
-				<el-col :span="4"><div class="data_list"><span class="data_num">{{orderCount}}</span> 新增商家</div></el-col>
-                <el-col :span="4"><div class="data_list"><span class="data_num">{{adminCount}}</span> 新增订单</div></el-col>
+				<el-col :span="4"><div class="data_list"><span class="data_num">{{shopCount}}</span> 新增商家</div></el-col>
+                <el-col :span="4"><div class="data_list"><span class="data_num">{{orderCount}}</span> 新增订单</div></el-col>
 			</el-row>
             <el-row :gutter="20">
                 <el-col :span="4"><div class="data_list all_head"><span class="data_num head">总数据：</span></div></el-col>
                 <el-col :span="4"><div class="data_list"><span class="data_num">{{allUserCount}}</span> 用户总量</div></el-col>
-                <el-col :span="4"><div class="data_list"><span class="data_num">{{allOrderCount}}</span> 商家总量</div></el-col>
-                <el-col :span="4"><div class="data_list"><span class="data_num">{{allAdminCount}}</span> 订单总量</div></el-col>
+                <el-col :span="4"><div class="data_list"><span class="data_num">{{allshopCount}}</span> 商家总量</div></el-col>
+                <el-col :span="4"><div class="data_list"><span class="data_num">{{allorderCount}}</span> 订单总量</div></el-col>
             </el-row>
 		</section>
 		<tendency :sevenDate='sevenDate' :sevenDay='sevenDay'></tendency>
@@ -26,14 +26,14 @@
     export default {
     	data(){
     		return {
-    			userCount: 12,
-    			orderCount: 15,
-                adminCount: 16,
-                allUserCount: 17,
-                allOrderCount: 20,
-                allAdminCount: 2,
+    			userCount: 0,
+                shopCount: 0,
+                orderCount: 0,
+                allUserCount: 0,
+                allshopCount: 0,
+                allorderCount: 0,
     			sevenDay: [],
-    			sevenDate: [[112,54,83,16,127,100,66],[70,50,83,16,127,100,66],[60,160,200,16,127,50,10]],
+    			sevenDate: [],
     		}
     	},
     	components: {
@@ -49,39 +49,42 @@
     		this.getSevenData();
     	},
     	methods: {
-    		async initData(){
-    			const today = dtime().format('YYYY-MM-DD')
-    			// Promise.all([userCount(today), orderCount(today), adminDayCount(today), getUserCount(), getOrderCount(), adminCount()])
-    			// .then(res => {
-    			// 	this.userCount = res[0].count;
-    			// 	this.orderCount = res[1].count;
-                //     this.adminCount = res[2].count;
-                //     this.allUserCount = res[3].count;
-                //     this.allOrderCount = res[4].count;
-                //     this.allAdminCount = res[5].count;
-    			// }).catch(err => {
-    			// 	console.log(err)
-    			// })
+             initData(){
+                 const _this = this;
+                 const url = window.fdConfig.url.feature.indexData;
+                 this.$http.get(url).then(function(res){
+                     var data = res.body.data;
+                     _this.userCount = data[0];
+                     _this.shopCount = data[1];
+                     _this.orderCount = data[2];
+                     _this.allUserCount = data[3];
+                     _this.allshopCount = data[4];
+                     _this.allorderCount = data[5];
+                 },function(){
+                 });
     		},
-    		async getSevenData(){
-    			// const apiArr = [[],[],[]];
-    			// this.sevenDay.forEach(item => {
-    			// 	apiArr[0].push(userCount(item));
-    			// 	apiArr[1].push(orderCount(item));
-                //     apiArr[2].push(adminDayCount(item))
-    			// });
-    			// const promiseArr = [...apiArr[0], ...apiArr[1], ...apiArr[2]];
-    			// Promise.all(promiseArr).then(res => {
-    			// 	const resArr = [[],[],[]];
-				// 	res.forEach((item, index) => {
-				// 		if (item.status === 1) {
-				// 			resArr[Math.floor(index/7)].push(item.count)
-				// 		}
-				// 	});
-				// 	this.sevenDate = resArr;
-    			// }).catch(err => {
-    			// 	console.log(err)
-    			// })
+            getSevenData(){
+                 const _this = this;
+                const url = window.fdConfig.url.feature.orderSeven;
+                this.$http.get(url).then(function(res){
+                    var data = res.body.data;
+                    var array = new Array(7);
+                    for(var i =0 ;i<7;i++){
+                        array[i] = 0;
+                    }
+                    var j = 0;
+                    var day = new Date(data[0].createTime).getDate();
+                    for(var i =0 ;i<data.length;i++){
+                        var time = new Date(data[i].createTime);
+                        if(time.getDate() !== day){
+                            j++;
+                        }
+                        array[j]++;
+                    }
+                    console.log(array);
+                    _this.sevenDate = array;
+                },function(){
+                });
     		}
     	}
     }

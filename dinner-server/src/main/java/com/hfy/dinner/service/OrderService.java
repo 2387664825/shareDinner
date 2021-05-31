@@ -11,6 +11,7 @@ import com.hfy.dinner.repository.pojo.Family;
 import com.hfy.dinner.repository.pojo.Order;
 import com.hfy.dinner.repository.pojo.User;
 import com.hfy.dinner.repository.vo.OrderVo;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -90,5 +91,20 @@ public class OrderService {
         }
         orderDao.updateByOrder(order.getUserId(), order.getFamilyId());
         return true;
+    }
+
+    public List<Order> getSevenDay() {
+        return orderDao.getSevenDay();
+    }
+
+    public List<Integer> getIndexData() {
+        List<Integer> lists = new ArrayList<>();
+        lists.add(userDao.selectCountUserDay(0));
+        lists.add(userDao.selectCountUserDay(1));
+        lists.add(orderDao.selectCountDay());
+        lists.add(userDao.selectCountALL(0));
+        lists.add(userDao.selectCountALL(1));
+        lists.add(orderDao.selectCountAll());
+        return lists;
     }
 }

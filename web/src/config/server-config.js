@@ -9,8 +9,12 @@ const serverUrl = {
         food: `${serviceRootPath}/food/list`,
         // 订单
         order: `${serviceRootPath}/order`,
+        orderSeven: `${serviceRootPath}/order/seven`,
+        indexData: `${serviceRootPath}/order/indexData`,
         // 用户
         user: `${serviceRootPath}/user/list`,
+        userFb: `${serviceRootPath}/user/fb`,
+        province: `${serviceRootPath}/user/sf`,
         // 管理员
         admin: `${serviceRootPath}/admin/list`,
         // 反馈模块
