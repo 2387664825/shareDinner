@@ -5,14 +5,17 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hfy.dinner.dao.FamilyDao;
 import com.hfy.dinner.dao.ProvinceDao;
+import com.hfy.dinner.dao.UserDao;
 import com.hfy.dinner.repository.dto.FamilyQueryDto;
 import com.hfy.dinner.repository.pojo.Family;
 import com.hfy.dinner.repository.pojo.Province;
+import com.hfy.dinner.repository.pojo.User;
 import com.hfy.dinner.util.DistanceUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +38,8 @@ public class FamilyService {
     private FamilyDao familyDao;
     @Resource
     private ProvinceDao provinceDao;
+    @Resource
+    private UserDao userDao;
 
     public PageInfo<?> query(FamilyQueryDto queryDto) {
         int page = queryDto.getOffset() / queryDto.getLimit() + 1;
@@ -57,7 +62,13 @@ public class FamilyService {
     }
 
     public Family getById(Integer familyId) {
-        return familyDao.selectById(familyId);
+        Family family = familyDao.selectById(familyId);
+        if (family.getFamilyCount() <= family.getReceiveCount()) {
+            family.setYy(1);
+        } else {
+            family.setYy(0);
+        }
+        return family;
     }
 
     public void inserintoFamily(Family family) {
@@ -97,10 +108,24 @@ public class FamilyService {
         List<Family> families = familyDao.selectList(lambda);
         for (Family family : families) {
             family.setStatusT(status.get(family.getStatus()));
-            if (x != null && y != null)
+            if (x != null && y != null) {
                 family.setJl(DistanceUtil.getDistance(x, y, family.getWzX(), family.getWzy()));
+            }
         }
         Collections.sort(families);
         return new PageInfo<Family>(families);
+    }
+
+    public List<Family> getByUserid(Integer userId) {
+        User user = userDao.selectById(userId);
+        String[] split = user.getConcern().split(";");
+        List<Integer> familyId = new ArrayList<>();
+        for (int i = 0; i < split.length; i++) {
+            familyId.add(Integer.valueOf(split[i]));
+        }
+        QueryWrapper<Family> query = new QueryWrapper<>();
+        query.in("id", familyId);
+        List<Family> families = familyDao.selectList(query);
+        return families;
     }
 }

@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -38,23 +40,27 @@ public class Family implements Comparable<Family> {
     /**
      * 就餐开始时间
      */
+    @JsonFormat(pattern = "HH:mm", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @TableField(value = "begin_time")
     private Date beginTime;
     /**
      * 就餐结束时间
      */
+    @JsonFormat(pattern = "HH:mm", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @TableField(value = "end_time")
     private Date endTime;
     /**
      * 家庭人数
      */
     @TableField(value = "family_count")
-    private Byte familyCount;
+    private Integer familyCount;
     /**
      * 一次可接收人数
      */
     @TableField(value = "receive_count")
-    private Byte receiveCount;
+    private Integer receiveCount;
     /**
      * 状态
      */
@@ -88,6 +94,9 @@ public class Family implements Comparable<Family> {
      */
     @TableField(value = "phone")
     private String phone;
+
+    @TableField(exist = false)
+    private Integer yy;
 
     /**
      * 评分

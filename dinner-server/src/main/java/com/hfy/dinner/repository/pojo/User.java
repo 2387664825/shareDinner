@@ -61,4 +61,7 @@ public class User {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @TableField(value = "login_time")
     private Date loginTime;
+
+    @TableField(value = "concern")
+    private String concern;
 }

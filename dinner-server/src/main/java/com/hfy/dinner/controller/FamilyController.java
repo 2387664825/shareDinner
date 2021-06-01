@@ -54,4 +54,9 @@ public class FamilyController {
         return new ResponseDo(200, "插入成功");
     }
 
+    @GetMapping("/sc")
+    public ResponseDo selectByUser(Integer userId) {
+        return new ResponseDo(200, familyService.getByUserid(userId));
+    }
+
 }
