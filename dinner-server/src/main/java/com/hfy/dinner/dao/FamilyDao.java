@@ -14,4 +14,7 @@ public interface FamilyDao extends BaseMapper<Family> {
 
     @Select("select name from family where id = #{familyId} ")
     String selectNameById(Integer familyId);
+
+    @Select("update family set number = number+1 where id = #{familyId} ")
+    int updateNumber(Integer familyId);
 }

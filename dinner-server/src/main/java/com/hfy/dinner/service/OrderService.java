@@ -130,4 +130,11 @@ public class OrderService {
         lists.add(orderDao.selectCountAll());
         return lists;
     }
+
+    public boolean update(Order order) {
+        if (order.getStatus() == 3) {
+            familyDao.updateNumber(order.getFamilyId());
+        }
+        return orderDao.updateById(order) == 1;
+    }
 }

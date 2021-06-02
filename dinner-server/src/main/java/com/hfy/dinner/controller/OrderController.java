@@ -53,6 +53,16 @@ public class OrderController {
         }
     }
 
+    @PostMapping("/update")
+    public ResponseDo update(@RequestBody Order order) {
+        boolean update = orderService.update(order);
+        if (update) {
+            return new ResponseDo(200, "更改成功");
+        } else {
+            return new ResponseDo(500, "更改失败");
+        }
+    }
+
     @GetMapping("/seven")
     public ResponseDo getSevenDay(){
         return new ResponseDo(200, orderService.getSevenDay());
