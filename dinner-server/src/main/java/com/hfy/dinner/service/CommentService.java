@@ -44,6 +44,7 @@ public class CommentService {
     public List<CommentVo> selectByFamilyId(Integer familyId) {
         QueryWrapper<Comment> query = new QueryWrapper<>();
         query.eq("family_id", familyId);
+        query.orderByDesc("create_time");
         List<Comment> comments = commentDao.selectList(query);
         List<CommentVo> lists = new ArrayList<>();
         for(Comment comment:comments){

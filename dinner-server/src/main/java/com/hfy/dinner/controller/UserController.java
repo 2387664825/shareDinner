@@ -63,4 +63,9 @@ public class UserController {
     public ResponseDo getFamilyId(Integer userId, String familyId) {
         return new ResponseDo(200, userService.getScByFamilyId(userId, familyId));
     }
+
+    @GetMapping("/concern")
+    public void concern(Integer userId, Integer familyId, Integer type) {
+        userService.concern(userId, familyId, type);
+    }
 }

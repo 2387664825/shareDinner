@@ -2,6 +2,7 @@ package com.hfy.dinner.controller;
 
 import com.hfy.dinner.consts.Const;
 import com.hfy.dinner.repository.dto.FoodQueryDto;
+import com.hfy.dinner.repository.dto.ToDayFood;
 import com.hfy.dinner.repository.pojo.Food;
 import com.hfy.dinner.repository.pojo.ResponseDo;
 import com.hfy.dinner.service.FoodService;
@@ -39,5 +40,18 @@ public class FoodController {
             return new ResponseDo(200, "更新/插入成功");
         }
         return new ResponseDo(400, "操作错误");
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseDo deleteFood(@PathVariable(value = "id") Integer id) {
+        if (foodService.deleteById(id)) {
+            return new ResponseDo(200, "更新/插入成功");
+        }
+        return new ResponseDo(400, "操作错误");
+    }
+
+    @PostMapping("/today")
+    public void today(@RequestBody ToDayFood toDayFood) {
+        foodService.setToDay(toDayFood);
     }
 }

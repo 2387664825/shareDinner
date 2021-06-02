@@ -27,6 +27,9 @@ public class Category {
     @TableField(value = "sort")
     private String sort;
 
+    @TableField(value = "hide")
+    private Integer hide;
+
     @TableField(exist = false)
     private List<Food> foods;
 }

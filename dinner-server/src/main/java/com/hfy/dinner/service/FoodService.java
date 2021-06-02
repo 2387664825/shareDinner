@@ -1,6 +1,5 @@
 package com.hfy.dinner.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hfy.dinner.dao.CategoryDao;
@@ -8,6 +7,8 @@ import com.hfy.dinner.dao.FamilyDao;
 import com.hfy.dinner.dao.FoodDao;
 import com.hfy.dinner.dao.UserDao;
 import com.hfy.dinner.repository.dto.FoodQueryDto;
+import com.hfy.dinner.repository.dto.ToDayFood;
+import com.hfy.dinner.repository.pojo.Family;
 import com.hfy.dinner.repository.pojo.Food;
 import com.hfy.dinner.repository.pojo.User;
 import com.hfy.dinner.repository.vo.FoodVo;
@@ -78,4 +79,25 @@ public class FoodService {
             return false;
         }
     }
+
+    public boolean deleteById(Integer id) {
+        int i = foodDao.deleteById(id);
+        return i == 1;
+    }
+
+    public void setToDay(ToDayFood toDay) {
+        List<Food> foods = toDay.getFoods();
+        foodDao.clearToDay(toDay.getFamilyId());
+        for (Food food : foods) {
+            foodDao.setToDay(food.getId());
+        }
+        Family family = new Family();
+        family.setId(toDay.getFamilyId());
+        family.setBeginTime(toDay.getBeginTime());
+        family.setEndTime(toDay.getEndTime());
+        family.setReceiveCount(toDay.getNumber());
+        family.setPrice(toDay.getPrice());
+        familyDao.updateById(family);
+    }
+
 }

@@ -29,4 +29,9 @@ public class BackController {
         return backService.update(back);
     }
 
+    @PostMapping("/insert")
+    public void insert(@RequestBody Back back) {
+        backService.insert(back);
+    }
+
 }

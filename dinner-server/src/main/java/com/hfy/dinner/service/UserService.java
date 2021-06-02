@@ -103,10 +103,37 @@ public class UserService {
 
     public Object getScByFamilyId(Integer userId, String familyId) {
         User user = userDao.selectById(userId);
-        if (user.getConcern().contains(familyId)) {
+        if (user.getConcern() != null && user.getConcern().contains(familyId)) {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public void concern(Integer userId, Integer familyId, Integer type) {
+        User user = userDao.selectById(userId);
+        String concern = user.getConcern();
+        if (concern != null) {
+            if (type == 1) {
+                concern += (familyId.toString() + ";");
+                user.setConcern(concern);
+                userDao.updateById(user);
+            } else {
+                String[] concerns = concern.split(";");
+                StringBuilder result = new StringBuilder();
+                for (int i = 0; i < concerns.length; i++) {
+                    if (!concerns[i].equals(familyId.toString())) {
+                        result.append(concerns[i]).append(";");
+                    }
+                }
+                user.setConcern(result.toString());
+                userDao.updateById(user);
+            }
+
+        } else if (type == 1) {
+            String c = familyId.toString() + ";";
+            user.setConcern(c);
+            userDao.updateById(user);
         }
     }
 }

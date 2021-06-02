@@ -72,4 +72,10 @@ public class BackService {
             return false;
         }
     }
+
+    public void insert(Back back) {
+        back.setType(0);
+        back.setCreateTime(new Date());
+        backDao.insert(back);
+    }
 }

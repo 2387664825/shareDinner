@@ -55,4 +55,10 @@ public class Food {
      */
     @TableField(value = "category_id")
     private Integer categoryId;
+
+    /**
+     * 是否是今日菜品
+     */
+    @TableField(value = "today")
+    private Integer today;
 }
