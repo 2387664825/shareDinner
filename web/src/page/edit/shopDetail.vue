@@ -1,281 +1,174 @@
 <template>
     <div>
      	<head-top></head-top>
+        <header class="form_header">店铺信息</header>
+        <el-divider content-position="right"></el-divider>
+        <el-form :inline="true"  :model="family">
         <el-row style="margin-top: 20px;">
-  			<el-col :span="14" :offset="4">
-  				<header class="form_header">选择食品种类</header>
-	  			<el-form :model="categoryForm" ref="categoryForm" label-width="110px" class="form">
-                    <el-row class="query">
-                        <el-col :span="12">
-                            <el-form-item label="用户名称：" label-width="100px">
-                                <label >{{selectTable.name}}</label>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="12">
-                            <el-form-item label="分数" label-width="100px">
-                                <label >{{selectTable.star}}</label>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="22">
-                            <el-form-item label="评论标签：" label-width="100px">
-                                <label :title="selectTable.typeValue" style="display:inline-block;width: 400px;">{{selectTable.typeValue}}</label>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="22">
-                            <el-form-item label="评论内容：" label-width="100px">
-                                <label :title="selectTable.content" style="display:inline-block;width: 400px;">{{selectTable.content}}</label>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="12">
-                            <el-form-item label="评论时间：" label-width="100px">
-                                <label >{{selectTable.createTime}}</label>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="24" >
-                            <el-form-item v-if="!falg" label="回复内容：" label-width="100px">
-                                <label :title="selectTable.back" style="display:inline-block;width: 400px;">{{selectTable.back}}</label>
-                            </el-form-item>
-                            <el-form-item label="回复：" label-width="100px"  v-if="falg">
-                                <el-input v-model="selectTable.back"  type="textarea" :rows="3" :max='300' style="width: 400px;"  show-word-lmit></el-input>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-	  			</el-form>
-	  			<header class="form_header">添加食品</header>
-
-
-  			</el-col>
+                    <el-col :span="12">
+                        <el-form-item label="用户id：" label-width="100px">
+                            <label >{{family.id}}</label>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="店铺名称：" label-width="100px">
+                            <label >{{family.name}}</label>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="店铺地址：" label-width="100px">
+                            <label >{{family.location}}</label>
+                        </el-form-item>
+                    </el-col>
+                    <!--<el-col :span="12">-->
+                        <!--<el-form-item label="身份证号码：" label-width="100px">-->
+                            <!--<label >{{family.idCard}}</label>-->
+                        <!--</el-form-item>-->
+                    <!--</el-col>-->
+                    <!--<el-col :span="12">-->
+                        <!--<el-form-item label="性别：" label-width="100px">-->
+                            <!--<label >{{family.sexValue}}</label>-->
+                        <!--</el-form-item>-->
+                    <!--</el-col>-->
+                    <!--<el-col :span="12">-->
+                        <!--<el-form-item label="出生日期：" label-width="100px">-->
+                            <!--<label >{{family.birthday}}</label>-->
+                        <!--</el-form-item>-->
+                    <!--</el-col>-->
+                    <!--<el-col :span="12">-->
+                        <!--<el-form-item label="信用：" label-width="100px">-->
+                            <!--<label >{{family.credit}}</label>-->
+                        <!--</el-form-item>-->
+                    <!--</el-col>-->
+                    <!--<el-col :span="12">-->
+                        <!--<el-form-item label="类型：" label-width="100px">-->
+                            <!--<label >{{family.typeValue}}</label>-->
+                        <!--</el-form-item>-->
+                    <!--</el-col>-->
+                    <!--<el-col :span="12">-->
+                        <!--<el-form-item label="地区：" label-width="100px">-->
+                            <!--<label >{{family.city}}</label>-->
+                        <!--</el-form-item>-->
+                    <!--</el-col>-->
+                    <!--<el-col :span="12">-->
+                        <!--<el-form-item label="登录时间：" label-width="100px">-->
+                            <!--<label >{{family.loginTime}}</label>-->
+                        <!--</el-form-item>-->
+                    <!--</el-col>-->
   		</el-row>
+        </el-form>
+        <header class="form_header">评论信息</header>
+        <div class="table_container">
+            <el-table
+                :data="tableData"
+                stripe
+                style="width: 100%">
+                <el-table-column
+                    type="index"
+                    width="100px">
+                </el-table-column>
+                <el-table-column
+                    label="用户名称"
+                    width="150"
+                    prop="userName">
+                </el-table-column>
+                <el-table-column
+                    label="评价分数"
+                    prop="star"
+                width="100">
+                </el-table-column>
+                <el-table-column
+                    label="评价内容"
+                    prop="content"
+                    width="400"
+                    :show-overflow-tooltip='true'>
+                </el-table-column>
+                <el-table-column
+                    label="评论时间"
+                    prop="createTime">
+                </el-table-column>
+            </el-table>
+            <div class="Pagination">
+                <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage"
+                    :page-size="10"
+                    layout="total, prev, pager, next"
+                    :total="count">
+                </el-pagination>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
  	import headTop from '@/components/headTop'
-    import {getCategory, addCategory, addFood} from '@/api/getData'
-    import {baseUrl, baseImgPath} from '@/config/env'
     export default {
     	data(){
     		return {
-    			baseUrl,
-    			baseImgPath,
-    			restaurant_id: 1,
-    			categoryForm: {
-    				categoryList: [],
-    				categorySelect: '',
-    				name: '',
-    				description: '',
-    			},
-    			foodForm: {
-    				name: '',
-    				description: '',
-    				image_path: '',
-    				activity: '',
-    				attributes: [],
-    				specs: [{
-    					specs: '默认',
-			          	packing_fee: 0,
-			          	price: 20,
-    				}],
-    			},
-    			foodrules: {
-    				name: [
-						{ required: true, message: '请输入食品名称', trigger: 'blur' },
-					],
-    			},
-    			attributes: [{
-		          	value: '新',
-		          	label: '新品'
-		        }, {
-		          	value: '招牌',
-		          	label: '招牌'
-		        },],
-    			showAddCategory: false,
-    			foodSpecs: 'one',
-    			dialogFormVisible: false,
-		        specsForm: {
-		          	specs: '',
-		          	packing_fee: 0,
-		          	price: 20,
-		        },
-		        specsFormrules: {
-		        	specs: [
-						{ required: true, message: '请输入规格', trigger: 'blur' },
-					],
-		        }
+    		    familyId:'',
+                family: {},
+                offset: 0,
+                limit: 10,
+                count: 0,
+                currentPage: 1,
+                tableData: [],
     		}
     	},
     	components: {
     		headTop,
     	},
     	created(){
-    		if (this.$route.query.restaurant_id) {
-    			this.restaurant_id = this.$route.query.restaurant_id;
-    		}else{
-    			this.restaurant_id = Math.ceil(Math.random()*10);
-    			this.$msgbox({
-		          title: '提示',
-		          message: '添加食品需要选择一个商铺，先去就去选择商铺吗？',
-		          showCancelButton: true,
-		          confirmButtonText: '确定',
-		          cancelButtonText: '取消',
-		          beforeClose: (action, instance, done) => {
-		            if (action === 'confirm') {
-		              this.$router.push('/shopList');
-		              done();
-		            } else {
-		            	this.$message({
-				            type: 'info',
-				            message: '取消'
-				        });
-		              	done();
-		            }
-		          }
-		        })
-    		}
+            this.familyId = this.$route.query.id;
     		this.initData();
+    		this.getComment();
     	},
     	computed: {
-    		selectValue: function (){
-    			return this.categoryForm.categoryList[this.categoryForm.categorySelect]||{}
-    		}
     	},
     	methods: {
-    		async initData(){
-    			try{
-    				const result = await getCategory(this.restaurant_id);
-	    			if (result.status == 1) {
-	    				result.category_list.map((item, index) => {
-	    					item.value = index;
-	    					item.label = item.name;
-	    				})
-	    				this.categoryForm.categoryList = result.category_list;
-	    			}else{
-	    				console.log(result)
-	    			}
-    			}catch(err){
-    				console.log(err)
-    			}
-    		},
-		    addCategoryFun(){
-		    	this.showAddCategory = !this.showAddCategory;
-		    },
-		    submitcategoryForm(categoryForm) {
-				this.$refs[categoryForm].validate(async (valid) => {
-					if (valid) {
-						const params = {
-							name: this.categoryForm.name,
-							description: this.categoryForm.description,
-							restaurant_id: this.restaurant_id,
-						}
-						try{
-							const result = await addCategory(params);
-							if (result.status == 1) {
-								this.initData();
-								this.categoryForm.name = '';
-								this.categoryForm.description = '';
-								this.showAddCategory = false;
-								this.$message({
-					            	type: 'success',
-					            	message: '添加成功'
-					          	});
-							}
-						}catch(err){
-							console.log(err)
-						}
-					} else {
-						this.$notify.error({
-							title: '错误',
-							message: '请检查输入是否正确',
-							offset: 100
-						});
-						return false;
-					}
-				});
-			},
-			uploadImg(res, file) {
-				if (res.status == 1) {
-					this.foodForm.image_path = res.image_path;
-				}else{
-					this.$message.error('上传图片失败！');
-				}
-			},
-			beforeImgUpload(file) {
-				const isRightType = (file.type === 'image/jpeg') || (file.type === 'image/png');
-				const isLt2M = file.size / 1024 / 1024 < 2;
+    		initData(){
+                const url = window.fdConfig.url.feature.family +"/"+this.familyId;
+                const _this = this;
+                this.$http.get(url,).then(function(res){
+                    var data = res.body.data;
+                    console.log('商家信息',data);
+                    _this.family = data;
+                },function(){
+                    console.log('请求失败处理');
+                });
 
-				if (!isRightType) {
-					this.$message.error('上传头像图片只能是 JPG 格式!');
-				}
-				if (!isLt2M) {
-					this.$message.error('上传头像图片大小不能超过 2MB!');
-				}
-				return isRightType && isLt2M;
-			},
-			addspecs(){
-				this.foodForm.specs.push({...this.specsForm});
-				this.specsForm.specs = '';
-				this.specsForm.packing_fee = 0;
-				this.specsForm.price = 20;
-				this.dialogFormVisible = false;
-			},
-			handleDelete(index){
-				this.foodForm.specs.splice(index, 1);
-			},
-			tableRowClassName(row, index) {
-		        if (index === 1) {
-		        	return 'info-row';
-		        } else if (index === 3) {
-		        	return 'positive-row';
-		        }
-		        return '';
-		    },
-		    addFood(foodForm){
-		    	this.$refs[foodForm].validate(async (valid) => {
-					if (valid) {
-						const params = {
-							...this.foodForm,
-							category_id: this.selectValue.id,
-							restaurant_id: this.restaurant_id,
-						}
-						try{
-							const result = await addFood(params);
-							if (result.status == 1) {
-								console.log(result)
-								this.$message({
-					            	type: 'success',
-					            	message: '添加成功'
-					          	});
-					          	this.foodForm = {
-				    				name: '',
-				    				description: '',
-				    				image_path: '',
-				    				activity: '',
-				    				attributes: [],
-				    				specs: [{
-				    					specs: '默认',
-							          	packing_fee: 0,
-							          	price: 20,
-				    				}],
-				    			}
-							}else{
-								this.$message({
-					            	type: 'error',
-					            	message: result.message
-					          	});
-							}
-						}catch(err){
-							console.log(err)
-						}
-					} else {
-						this.$notify.error({
-							title: '错误',
-							message: '请检查输入是否正确',
-							offset: 100
-						});
-						return false;
-					}
-				});
-		    }
+    		},
+            getComment(){
+                const url = window.fdConfig.url.feature.comment;
+                var params={
+                    offset:this.offset,
+                    limit:this.limit,
+                    familyId:this.familyId
+                };
+                const _this = this;
+                this.$http.get(url,{
+                    params:params
+                }).then(function(res){
+                    var data = res.body;
+                    console.log('评论信息',data);
+                    _this.count = data.pageInfo.rowCount;
+                    for(var i =0 ;i<data.data.length;i++){
+                        data.data[i].star += '分';
+                    }
+                    _this.tableData = data.data;
+                },function(){
+                    console.log('请求失败处理');
+                });
+            },
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.offset = (val - 1)*this.limit;
+                this.getComment()
+            },
 		}
     }
 </script>
@@ -296,7 +189,7 @@
 		padding: 10px 10px 0;
 	}
 	.form_header{
-		text-align: center;
+		//text-align: center;
 		margin-bottom: 10px;
 	}
 	.category_select{
@@ -314,6 +207,14 @@
 	.showEdit{
 		height: 185px;
 	}
+    .table_container{
+        padding: 20px;
+    }
+    .Pagination{
+        display: flex;
+        justify-content: flex-start;
+        margin-top: 8px;
+    }
 	.add_category{
 		background: #f9fafc;
 		padding: 10px 30px 0px 10px;

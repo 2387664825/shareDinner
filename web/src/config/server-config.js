@@ -5,6 +5,7 @@ const serverUrl = {
     feature:{
         // 家庭
         family: `${serviceRootPath}/family`,
+        familyUpdate: `${serviceRootPath}/family/insert`,
         // 菜单
         food: `${serviceRootPath}/food/list`,
         // 订单
@@ -17,6 +18,8 @@ const serverUrl = {
         province: `${serviceRootPath}/user/sf`,
         // 管理员
         admin: `${serviceRootPath}/admin/list`,
+        // 评论
+        comment: `${serviceRootPath}/comment`,
         // 反馈模块
         back:`${serviceRootPath}/back`,
     },

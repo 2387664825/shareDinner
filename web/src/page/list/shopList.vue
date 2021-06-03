@@ -94,16 +94,25 @@
                 <el-table-column label="操作" width="200">
                 <template slot-scope="scope">
                     <el-button
-                        size="mini"
+                        size="small"
+                        v-if="scope.row.status === 1"
+                        type="primary"
                         @click="handleSp(scope.$index, scope.row)">审批</el-button>
                     <el-button
-                        size="mini"
+                        size="small"
+                        v-if="scope.row.status !== 1 "
                         type="Success"
-                        @click="toFoodList(scope.$index, scope.row)">详情</el-button>
+                        @click="toDetail(scope.$index, scope.row)">详情</el-button>
                     <el-button
-                        size="mini"
+                        size="small"
+                        v-if="scope.row.status === 3"
                         type="danger"
-                        @click="handleDelete(scope.$index, scope.row)">禁止</el-button>
+                        @click="handleDelete(scope.row,4)">禁止</el-button>
+                    <el-button
+                        size="small"
+                        v-if="scope.row.status === 4"
+                        type="danger"
+                        @click="handleDelete(scope.row,3)">解封</el-button>
                 </template>
             </el-table-column>
             </el-table>
@@ -149,7 +158,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="原因：" label-width="100px" v-if="sp.type == 2">
-                        <el-input type="textarea" v-model="sp.yy"></el-input>
+                        <el-input type="textarea" v-model="selectTable.because"></el-input>
                     </el-form-item>
                 </el-form>
               <div slot="footer" class="dialog-footer">
@@ -186,9 +195,12 @@
                 },{
                     value: '3',
                     label: '已通过'
+                },{
+                    value: '4',
+                    label: '被封禁'
                 }],
                 spType: [{
-                    value: '1',
+                    value: '3',
                     label: '通过'
                 }, {
                     value: '2',
@@ -245,17 +257,54 @@
                 this.address.address = row.address;
                 this.dialogFormVisible = true;
             },
-            toFoodList(index, row){
-                this.$router.push({ path: 'addGoods', query: { restaurant_id: row.id }})
+            toDetail(index, row){
+                this.$router.push({ path: 'shopDetail', query: { id: row.id }})
             },
-            handleDelete(index, row) {
+            handleDelete( row,status) {
+                const url = window.fdConfig.url.feature.familyUpdate;
+                const _this = this;
+                var data = {
+                    status:status,
+                    id:row.id
+                };
+                this.$http.post(url,data
+                ).then(function(){
+                    this.$notify({
+                        title: '成功',
+                        message: status == 4?'禁止成功':'解封成功',
+                        type: 'success'
+                    });
+                    _this.getShop();
+                },function(){
+                    this.$notify.error({
+                        title: '错误',
+                        message: '操作错误'
+                    });
+                });
             },
             updateShop(){
-
-            },
-            addressSelect(vale){
-                const {address, latitude, longitude} = vale;
-                this.address = {address, latitude, longitude};
+                const url = window.fdConfig.url.feature.familyUpdate;
+                const _this = this;
+                var data = {
+                    status:this.sp.type,
+                    because:this.selectTable.because,
+                    id:this.selectTable.id
+                };
+                this.$http.post(url,data
+                ).then(function(){
+                    this.$notify({
+                        title: '成功',
+                        message: '审批成功',
+                        type: 'success'
+                    });
+                    _this.dialogFormVisible = false;
+                    _this.getShop();
+                },function(){
+                    this.$notify.error({
+                        title: '错误',
+                        message: '操作错误'
+                    });
+                });
             }
         },
     }

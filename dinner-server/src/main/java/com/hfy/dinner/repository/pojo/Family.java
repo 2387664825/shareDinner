@@ -111,12 +111,17 @@ public class Family implements Comparable<Family> {
      */
     @TableField(value = "wz_y")
     private Double wzy;
+
+    @TableField(value = "because")
+    private String because;
     /**
      * 当前距离
      */
     @TableField(exist = false)
     private Double jl;
 
+    @TableField(exist = false)
+    private Integer userId;
     @Override
     public int compareTo(Family o) {
         if (this.jl < o.jl) {

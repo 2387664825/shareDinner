@@ -95,7 +95,7 @@ public class FoodService {
         family.setId(toDay.getFamilyId());
         family.setBeginTime(toDay.getBeginTime());
         family.setEndTime(toDay.getEndTime());
-        family.setReceiveCount(toDay.getNumber());
+        family.setFamilyCount(toDay.getNumber());
         family.setPrice(toDay.getPrice());
         familyDao.updateById(family);
     }

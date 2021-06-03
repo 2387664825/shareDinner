@@ -73,10 +73,20 @@ public class FamilyService {
 
     public void inserintoFamily(Family family) {
         if (family.getId() != null) {
+            if (family.getStatus() == 3) {
+                userDao.setUserTypeByFamilyId(family.getId(), 1);
+            } else if (family.getStatus() == 4) {
+                userDao.setUserTypeByFamilyId(family.getId(), 0);
+            }
             familyDao.updateById(family);
         } else {
-            family.setStatus(0);
+            family.setStatus(1);
             familyDao.insert(family);
+            Integer id = familyDao.getLastId();
+            User user = new User();
+            user.setId(family.getUserId());
+            user.setFamilyId(id);
+            userDao.updateById(user);
         }
     }
 

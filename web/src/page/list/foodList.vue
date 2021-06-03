@@ -74,11 +74,11 @@
                 <el-form-item label="所属店铺：" label-width="100px">
                     <label >{{selectTable.familyName}}</label>
                 </el-form-item>
-                <el-form-item label="店铺：" label-width="100px">
-                    <label >{{selectTable.js}}</label>
+                <el-form-item label="食品分类：" label-width="100px">
+                    <label >{{selectTable.categoryName}}</label>
                 </el-form-item>
-                <el-form-item label="联系电话：" label-width="100px">
-                    <label >{{selectTable.phone}}</label>
+                <el-form-item label="食品简述：" label-width="100px">
+                    <label >{{selectTable.js}}</label>
                 </el-form-item>
                 <el-form-item label="食品图片：" label-width="100px">
                     <img  :src="selectTable.picture" class="avatar">

@@ -17,4 +17,7 @@ public interface FamilyDao extends BaseMapper<Family> {
 
     @Select("update family set number = number+1 where id = #{familyId} ")
     int updateNumber(Integer familyId);
+
+    @Select("SELECT LAST_INSERT_ID()")
+    Integer getLastId();
 }
