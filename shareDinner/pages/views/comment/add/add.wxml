@@ -1,0 +1,19 @@
+<form bindsubmit="submit">
+<view class='shop-container'>
+    <view class='title'>商家：{{family.name}}</view>
+    <view class='cell-group'>
+        <!-- 五星好评参考：https://blog.csdn.net/q1923408717/article/details/100523984 -->
+        <view class="cross_column" style="margin-top: 50rpx;">
+            <label style="margin-left:20rpx">评分：</label>
+            <image class="imagecls" wx:for="{{5}}" wx:key="{{index}}" data-name="total" data-item="{{item}}" src="{{item-total+1>0?'/image/icon/xh.jpg':'/image/icon/xx.jpg'}}" bindtap="img_bind"></image>
+         </view>
+         <view class='title'>评价:</view>
+        <view style="padding-bottom:20px;">
+            <textarea placeholder="请输入"  bindblur="getPj" />
+        </view>
+    </view>
+</view>
+<view class='bottomView'>
+    <button class='submit' formType="submit">确认</button>
+</view>
+</form>

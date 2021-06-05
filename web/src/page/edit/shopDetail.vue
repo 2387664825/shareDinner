@@ -190,7 +190,9 @@
 	}
 	.form_header{
 		//text-align: center;
+        margin-left: 30px;
 		margin-bottom: 10px;
+        font-size: 1.2em;
 	}
 	.category_select{
 		border: 1px solid #eaeefb;

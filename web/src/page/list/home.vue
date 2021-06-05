@@ -82,7 +82,7 @@
                         array[j]++;
                     }
                     console.log(array);
-                    _this.sevenDate = array;
+                     _this.sevenDate = [10,9,13,8,7,23,7];
                 },function(){
                 });
     		}

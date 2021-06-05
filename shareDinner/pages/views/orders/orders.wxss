@@ -1,0 +1,82 @@
+@import '/pages/common/common.wxss';
+page {
+  width: 100%;
+  height: 100%;
+  background: #f0f0f0;
+}
+.shop {
+  display: flex;
+  /* justify-content: space-between; */
+  margin:25rpx;
+  background: #fff;
+  border-radius: 15rpx;
+  border-bottom: 1rpx solid #eee;
+  flex-wrap: wrap;
+}
+.shop-image {
+  display: flex;
+  width: 100rpx;
+  justify-content: center;
+  height: 80rpx;
+}
+.shop-image image{
+  margin-top: 10rpx;
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 10rpx;
+}
+.shop .name{
+    display: flex;
+    width: 85%;
+    height: 80rpx;
+    align-items: center;
+    font-size: 1.1em;
+}
+.left {
+    display: flex;
+    width: 25%;
+    margin-bottom: 10rpx;
+    margin-left: 20rpx;
+    font-size: 0.9em;
+}
+.left2 {
+    display: flex;
+    width: 15%;
+    margin-left: 20rpx;
+    align-items: center;
+    border-top: 1px solid #DCDCDC;
+}
+.right {
+    display: flex;
+    width: 70%;
+    color: #C0C0C0;
+    font-size: 0.9em;
+}
+.right2 {
+    display: flex;
+    width: 15%;
+    color: #C0C0C0;
+    align-items: center;
+    border-top: 1px solid #DCDCDC;
+}
+.right3 {
+    display: flex;
+    width: 65%;
+    height: 41px;
+    color: #C0C0C0;
+    align-items: center;
+    justify-content: flex-end;
+    border-top: 1px solid #DCDCDC;
+}
+.btn{
+    width: 160rpx;
+    height: 60rpx;
+    color: #fff;
+    line-height: 60rpx;
+    font-size: 28rpx;
+    padding: 0px;
+    margin: 10rpx 0 10rpx 0;
+    background-color: #009FE9;
+    display: inline-block;
+}
+

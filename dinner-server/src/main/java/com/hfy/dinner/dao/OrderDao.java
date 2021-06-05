@@ -27,6 +27,7 @@ public interface OrderDao extends BaseMapper<Order> {
 
     @Select("select count(*) from user_order where to_days(create_time) = to_days(now())")
     Integer selectCountDay();
+
     @Select("select count(*) from user_order")
     Integer selectCountAll();
 }
