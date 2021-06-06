@@ -57,7 +57,7 @@ public class UploaderController {
         System.out.println(file);
         String fileName = file.getOriginalFilename();//获取文件名加后缀
         if (fileName != null && fileName != "") {
-            String returnUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/image/get?path=";//存储路径
+            String returnUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/api/v1/image/get?path=";//存储路径
             String path = "E:\\image\\dinner"; //文件存储位置
             String fileF = fileName.substring(fileName.lastIndexOf("."), fileName.length());//文件后缀
             fileName = new Date().getTime() + "_" + new Random().nextInt(1000) + fileF;//新的文件名

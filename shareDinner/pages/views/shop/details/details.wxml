@@ -1,0 +1,19 @@
+<view class="main">
+    <view class="goods-box">
+        <image src="{{food.picture}}" class="goods-thumb"></image>
+        <image wx:if="{{show}}" src="/image/cart1.png" class="to-carts-icon"></image>
+        <view class="goods-stock">{{goods.stock}}</view>
+        <view class="goods-title">{{food.name}}</view>
+        <view class="goods-price">￥ {{food.price}}</view>
+    </view>
+    <view class="goods-tab-box">
+        <view class="goods-tab-nav "  data-index="0"></view>
+        <view class="goods-tab-nav on" data-index="1">菜品详情</view>
+        <view class="goods-tab-nav "  data-index="2"></view>
+        <view class="goods-content">
+            <view >  {{"  " + food.js}}</view>
+            <!-- <view wx:if="{{curIndex === 1}}">{{food.parameter}}</view>
+            <view wx:if="{{curIndex === 2}}">{{food.service}}</view> -->
+        </view>
+    </view>
+</view>

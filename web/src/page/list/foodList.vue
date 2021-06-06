@@ -47,7 +47,7 @@
                   <template slot-scope="scope">
                     <el-button
                       size="small"
-                      @click="handleEdit(scope.row)">编辑</el-button>
+                      @click="handle(scope.row)">详情</el-button>
                     <el-button
                       size="small"
                       type="danger"
@@ -66,6 +66,25 @@
                 </el-pagination>
             </div>
         </div>
+        <el-dialog title="食品详情" v-model="dialogFormVisible" >
+            <el-form :model="selectTable">
+                <el-form-item label="食品名称：" label-width="100px">
+                    <label >{{selectTable.name}}</label>
+                </el-form-item>
+                <el-form-item label="所属店铺：" label-width="100px">
+                    <label >{{selectTable.familyName}}</label>
+                </el-form-item>
+                <el-form-item label="食品分类：" label-width="100px">
+                    <label >{{selectTable.categoryName}}</label>
+                </el-form-item>
+                <el-form-item label="食品简述：" label-width="100px">
+                    <label >{{selectTable.js}}</label>
+                </el-form-item>
+                <el-form-item label="食品图片：" label-width="100px">
+                    <img  :src="selectTable.picture" class="avatar">
+                </el-form-item>
+            </el-form>
+        </el-dialog>
     </div>
 </template>
 
@@ -123,7 +142,8 @@
                 this.offset = (val - 1)*this.limit;
                 this.getFoods()
             },
-            handleEdit(row) {
+            handle(row) {
+                this.selectTable = row;
                 this.dialogFormVisible = true;
             },
              handleDelete(index, row) {

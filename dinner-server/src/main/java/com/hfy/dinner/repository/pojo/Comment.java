@@ -39,4 +39,7 @@ public class Comment {
 
     @TableField(value = "type")
     private Integer type;
+
+    @TableField(exist = false)
+    private Integer orderId;
 }

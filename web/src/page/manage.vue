@@ -17,7 +17,7 @@
                             <el-menu-item index="adminList"><i class="el-icon-menu"></i>管理员列表</el-menu-item>
                         </el-menu>
                     </el-col>
-                    <el-col :span="20" style="height: 100%;overflow: auto">
+                    <el-col :span="20" style="height: 95%;overflow: hidden">
                         <keep-alive >
                             <router-view ></router-view>
                         </keep-alive>
@@ -45,10 +45,10 @@
 <style lang="less" scoped>
 	@import '../style/mixin';
 	.manage_page{
-
+        height: 93%;
 	}
     .fd-main {
-        height: 100%;
+        height: 90%;
         background-color: #e4dede;
     }
     .fd-iframe-box {

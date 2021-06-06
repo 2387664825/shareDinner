@@ -1,0 +1,20 @@
+<view class="main">
+    <!-- 进度条：https://my.oschina.net/u/4325773/blog/3339048 -->
+    <view class="title">评分：{{starAll}}</view>
+    <view class="s_progress">
+        <view wx:for="{{series}}" wx:key="item.name">
+            <text >{{item.name}}</text>
+            <progress class="s_prg" percent="{{item.data}}" border-radius="10" stroke-width="10" color="#226AF9"  />
+            <text>+{{item.number}}人</text>
+        </view>
+    </view>
+    <view class="comment-box">
+        <view wx:for="{{comments}}" wx:key="index" class="comment-list">
+            <image class="comment-thumb" src="{{item.picture}}"></image>
+            <view class="name">用户：{{item.userName}}</view>
+            <view class="right">评分：{{item.star}}</view>
+            <view class="content">内容：{{item.content}}</view>
+            <view class="comment-time">{{item.createTime}}</view>
+        </view>
+    </view>
+</view>

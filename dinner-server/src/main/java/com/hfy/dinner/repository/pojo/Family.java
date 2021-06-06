@@ -7,8 +7,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.ToString;
 
-import java.util.Date;
-
 /**
  * @author hufayong
  * @date 2021/3/6 16:36
@@ -39,22 +37,22 @@ public class Family implements Comparable<Family> {
      * 就餐开始时间
      */
     @TableField(value = "begin_time")
-    private Date beginTime;
+    private String beginTime;
     /**
      * 就餐结束时间
      */
     @TableField(value = "end_time")
-    private Date endTime;
+    private String endTime;
     /**
      * 家庭人数
      */
     @TableField(value = "family_count")
-    private Byte familyCount;
+    private Integer familyCount;
     /**
      * 一次可接收人数
      */
     @TableField(value = "receive_count")
-    private Byte receiveCount;
+    private Integer receiveCount;
     /**
      * 状态
      */
@@ -89,6 +87,9 @@ public class Family implements Comparable<Family> {
     @TableField(value = "phone")
     private String phone;
 
+    @TableField(exist = false)
+    private Integer yy;
+
     /**
      * 评分
      */
@@ -110,12 +111,17 @@ public class Family implements Comparable<Family> {
      */
     @TableField(value = "wz_y")
     private Double wzy;
+
+    @TableField(value = "because")
+    private String because;
     /**
      * 当前距离
      */
     @TableField(exist = false)
     private Double jl;
 
+    @TableField(exist = false)
+    private Integer userId;
     @Override
     public int compareTo(Family o) {
         if (this.jl < o.jl) {

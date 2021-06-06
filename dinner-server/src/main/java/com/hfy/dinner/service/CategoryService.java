@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +32,12 @@ public class CategoryService {
         List<Category> lists = categoryDao.selectList(wrapper);
         if (!CollectionUtils.isEmpty(lists)) {
             for (Category category : lists) {
-                List<Food> foodList = foodDao.selectByFaimlyIdAndCategoryId(familyId, category.getId());
+                List<Food> foodList = new ArrayList<>();
+                if (category.getHide() == 1) {
+                    foodList = foodDao.selectByFaimlyIdToday(familyId);
+                } else {
+                    foodList = foodDao.selectByFaimlyIdAndCategoryId(familyId, category.getId());
+                }
                 category.setFoods(foodList);
             }
         }
@@ -41,8 +47,23 @@ public class CategoryService {
     public List<Category> getCategory(Integer id) {
         QueryWrapper<Category> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("family_id", id);
+        queryWrapper.eq("hide", 0);
         queryWrapper.orderByAsc("sort");
         List<Category> lists = categoryDao.selectList(queryWrapper);
         return lists;
+    }
+
+    public boolean deleteById(Integer id) {
+        int i = categoryDao.deleteById(id);
+        return i == 1;
+    }
+
+    public Object insertOrUpdate(Category category) {
+        if (category.getId() != null) {
+            categoryDao.updateById(category);
+        } else {
+            categoryDao.insert(category);
+        }
+        return true;
     }
 }

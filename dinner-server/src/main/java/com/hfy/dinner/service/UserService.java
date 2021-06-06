@@ -3,15 +3,14 @@ package com.hfy.dinner.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-
+import com.hfy.dinner.dao.ChinaDao;
 import com.hfy.dinner.dao.UserDao;
 import com.hfy.dinner.repository.dto.UserQueryDto;
+import com.hfy.dinner.repository.pojo.China;
 import com.hfy.dinner.repository.pojo.ResponseDo;
 import com.hfy.dinner.repository.pojo.User;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -25,6 +24,8 @@ import java.util.List;
 public class UserService {
     @Resource
     private UserDao userDao;
+    @Resource
+    private ChinaDao chinaDao;
 
     public ResponseDo getUser() {
         return new ResponseDo(200, userDao.selectById(10001));
@@ -72,5 +73,67 @@ public class UserService {
     public void updateUser(User user) {
         user.setLoginTime(new Date());
         userDao.updateById(user);
+    }
+
+    public int[] getUserFb() {
+        List<User> users = userDao.selectList(new QueryWrapper<>());
+        QueryWrapper<China> query = new QueryWrapper<>();
+        query.eq("pid",0);
+        List<China> chinas = chinaDao.selectList(query);
+        int[] fb = new int[chinas.size()];
+        for(int i =0 ;i<fb.length;i++){
+            fb[i] = 0;
+        }
+        for(int i = 0 ;i<chinas.size();i++){
+            for(User user:users){
+                if(user.getCity()!= null && user.getCity().contains(chinas.get(i).getName())){
+                    fb[i]++;
+                }
+            }
+        }
+        return fb;
+    }
+
+    public List<China> getProvince() {
+        QueryWrapper<China> query = new QueryWrapper<>();
+        query.eq("pid",0);
+        List<China> chinas = chinaDao.selectList(query);
+        return chinas;
+    }
+
+    public Object getScByFamilyId(Integer userId, String familyId) {
+        User user = userDao.selectById(userId);
+        if (user.getConcern() != null && user.getConcern().contains(familyId)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void concern(Integer userId, Integer familyId, Integer type) {
+        User user = userDao.selectById(userId);
+        String concern = user.getConcern();
+        if (concern != null) {
+            if (type == 1) {
+                concern += (familyId.toString() + ";");
+                user.setConcern(concern);
+                userDao.updateById(user);
+            } else {
+                String[] concerns = concern.split(";");
+                StringBuilder result = new StringBuilder();
+                for (int i = 0; i < concerns.length; i++) {
+                    if (!concerns[i].equals(familyId.toString())) {
+                        result.append(concerns[i]).append(";");
+                    }
+                }
+                user.setConcern(result.toString());
+                userDao.updateById(user);
+            }
+
+        } else if (type == 1) {
+            String c = familyId.toString() + ";";
+            user.setConcern(c);
+            userDao.updateById(user);
+        }
     }
 }

@@ -126,7 +126,7 @@
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="性别：" label-width="100px">
-                                <label >{{selectTable.sex}}</label>
+                                <label >{{selectTable.sexValue}}</label>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
@@ -228,6 +228,7 @@
                     const users =  data.data;
                     for (var i = 0;i<users.length;i++){
                         users[i].typeValue = users[i].type === 0?'用户':'店家';
+                        users[i].sexValue = users[i].sex === 0?'男':'女';
                     }
                     this.tableData = users;
                     console.log("用户列表：{}",users);

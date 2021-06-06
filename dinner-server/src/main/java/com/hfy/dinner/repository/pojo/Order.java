@@ -40,4 +40,7 @@ public class Order {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @TableField(value = "valid_time")
     private Date validTime;
+
+    @TableField(value = "bz")
+    private String bz;
 }

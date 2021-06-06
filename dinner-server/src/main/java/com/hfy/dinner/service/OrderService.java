@@ -13,6 +13,7 @@ import com.hfy.dinner.repository.pojo.User;
 import com.hfy.dinner.repository.vo.OrderVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
@@ -38,24 +39,34 @@ public class OrderService {
         PageHelper.startPage(page, queryDto.getLimit());
         List<Order> orders = orderDao.selectByDto(queryDto);
         PageInfo orderPageInfo = new PageInfo<>(orders);
-        orderPageInfo.setList(convertVo(orders));
+        orderPageInfo.setList(convertVo(orders, null));
         return orderPageInfo;
     }
 
+    @Transactional
     public void insert(Order order) {
         order.setCreateTime(new Date());
         order.setStatus(1);
+        Family family = familyDao.selectById(order.getFamilyId());
+        // 并发，是否会产生数据脏读？
+        family.setReceiveCount(family.getReceiveCount() + 1);
+        familyDao.updateById(family);
         orderDao.insert(order);
     }
 
-    public PageInfo<OrderVo> getOrderByUserId(Integer userId) {
+    public PageInfo<OrderVo> getOrderById(Integer type, Integer familyId, Integer userId) {
         QueryWrapper<Order> query = new QueryWrapper<>();
-        query.eq("user_id", userId);
+        if (type == 0) {
+            query.eq("user_id", userId);
+        } else {
+            query.eq("family_id", familyId);
+        }
+        query.orderByDesc("create_time");
         List<Order> orders = orderDao.selectList(query);
-        return new PageInfo<>(convertVo(orders));
+        return new PageInfo<>(convertVo(orders, type));
     }
 
-    private List<OrderVo> convertVo(List<Order> orders) {
+    private List<OrderVo> convertVo(List<Order> orders, Integer type) {
         List<OrderVo> lists = new ArrayList<>();
         for (Order order : orders) {
             OrderVo orderVo = new OrderVo();
@@ -64,7 +75,11 @@ public class OrderService {
             Family family = familyDao.selectById(order.getFamilyId());
             orderVo.setFamilyName(family.getName());
             orderVo.setUserName(user.getName());
-            orderVo.setPicture(family.getImgLocation());
+            if (type != null && type == 1) {
+                orderVo.setPicture(user.getPicture());
+            } else {
+                orderVo.setPicture(family.getImgLocation());
+            }
             orderVo.setLocation(family.getLocation());
             lists.add(orderVo);
         }
@@ -79,7 +94,13 @@ public class OrderService {
         return null;
     }
 
-    public boolean update(Order order) {
+    /**
+     * 取消订单
+     *
+     * @param order
+     * @return
+     */
+    public boolean cancelOrder(Order order) {
         if (order.getUserId() == null) {
             System.out.println("订单 用户id 不能为空");
             return false;
@@ -88,7 +109,32 @@ public class OrderService {
             System.out.println("订单 店铺id 不能为空");
             return false;
         }
+        Family family = familyDao.selectById(order.getFamilyId());
+        family.setReceiveCount(family.getReceiveCount() - 1);
+        familyDao.updateById(family);
         orderDao.updateByOrder(order.getUserId(), order.getFamilyId());
         return true;
+    }
+
+    public List<Order> getSevenDay() {
+        return orderDao.getSevenDay();
+    }
+
+    public List<Integer> getIndexData() {
+        List<Integer> lists = new ArrayList<>();
+        lists.add(userDao.selectCountUserDay(0));
+        lists.add(userDao.selectCountUserDay(1));
+        lists.add(orderDao.selectCountDay());
+        lists.add(userDao.selectCountALL(0));
+        lists.add(userDao.selectCountALL(1));
+        lists.add(orderDao.selectCountAll());
+        return lists;
+    }
+
+    public boolean update(Order order) {
+        if (order.getStatus() == 3) {
+            familyDao.updateNumber(order.getFamilyId());
+        }
+        return orderDao.updateById(order) == 1;
     }
 }

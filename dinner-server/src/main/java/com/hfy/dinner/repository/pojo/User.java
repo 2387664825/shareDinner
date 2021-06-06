@@ -40,6 +40,8 @@ public class User {
     @TableField(value = "sex")
     private Integer sex;
 
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @TableField(value = "birthday")
     private Date birthday;
 
@@ -59,4 +61,7 @@ public class User {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @TableField(value = "login_time")
     private Date loginTime;
+
+    @TableField(value = "concern")
+    private String concern;
 }

@@ -23,8 +23,8 @@ public class OrderController {
     }
 
     @GetMapping("/user")
-    public ResponseDo getOrderByUserId(@RequestParam(value = "userId") Integer userId) {
-        return new ResponseDo(orderService.getOrderByUserId(userId));
+    public ResponseDo getOrderByUserId(Integer userId, Integer type, Integer familyId) {
+        return new ResponseDo(orderService.getOrderById(type, familyId, userId));
     }
 
     @GetMapping("/one")
@@ -38,17 +38,37 @@ public class OrderController {
 
     @PostMapping
     public ResponseDo createOrder(@RequestBody Order order) {
+
         orderService.insert(order);
         return new ResponseDo(200, "创建成功");
     }
 
+    @PostMapping("/cancel")
+    public ResponseDo cancelOrder(@RequestBody Order order) {
+        boolean update = orderService.cancelOrder(order);
+        if (update) {
+            return new ResponseDo(200, "更改成功");
+        } else {
+            return new ResponseDo(500, "更改失败");
+        }
+    }
+
     @PostMapping("/update")
-    public ResponseDo updateOrder(@RequestBody Order order) {
+    public ResponseDo update(@RequestBody Order order) {
         boolean update = orderService.update(order);
         if (update) {
             return new ResponseDo(200, "更改成功");
         } else {
             return new ResponseDo(500, "更改失败");
         }
+    }
+
+    @GetMapping("/seven")
+    public ResponseDo getSevenDay(){
+        return new ResponseDo(200, orderService.getSevenDay());
+    }
+    @GetMapping("/indexData")
+    public ResponseDo getIndexData(){
+        return new ResponseDo(200,orderService.getIndexData());
     }
 }

@@ -9,12 +9,13 @@ const home = r => require.ensure([], () => r(require('@/page/list/home')), 'home
 const userFb = r => require.ensure([], () => r(require('@/page/list/userFb')), 'userFb');
 const userList = r => require.ensure([], () => r(require('@/page/list/userList')), 'userList');
 const shopList = r => require.ensure([], () => r(require('@/page/list/shopList')), 'shopList');
+const shopDetail = r => require.ensure([], () => r(require('@/page/edit/shopDetail')), 'shopDetail');
 const foodList = r => require.ensure([], () => r(require('@/page/list/foodList')), 'foodList');
 const orderList = r => require.ensure([], () => r(require('@/page/list/orderList')), 'orderList');
 const adminList = r => require.ensure([], () => r(require('@/page/list/adminList')), 'adminList');
 const backList = r => require.ensure([], () => r(require('@/page/list/backList')), 'backList');
 const addGoods = r => require.ensure([], () => r(require('@/page/edit/addGoods')), 'addGoods');
-const adminSet = r => require.ensure([], () => r(require('@/page/edit/adminSet')), 'adminSet');
+
 
 const routes = [
 	{
@@ -42,6 +43,10 @@ const routes = [
 			component: shopList,
 			meta: [ '商家列表'],
 		},{
+            path: '/shopDetail',
+            component: shopDetail,
+            meta: [ '商家详情'],
+        },{
 			path: '/foodList',
 			component: foodList,
 			meta: [ '食品列表'],
@@ -58,10 +63,6 @@ const routes = [
             component: backList,
             meta: [ '反馈列表'],
         },{
-			path: '/adminSet',
-			component: adminSet,
-			meta: [ '管理员设置'],
-		},{
             path: '/userFb',
             component: userFb,
             meta: [ '用户分布'],

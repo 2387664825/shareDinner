@@ -1,6 +1,7 @@
 package com.hfy.dinner.controller;
 
 import com.hfy.dinner.consts.Const;
+import com.hfy.dinner.repository.pojo.Category;
 import com.hfy.dinner.repository.pojo.ResponseDo;
 import com.hfy.dinner.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,15 @@ public class CategoryController {
     @GetMapping("/family")
     public ResponseDo getCategoryById(@RequestParam(value = "id") Integer id) {
         return new ResponseDo(200, categoryService.getCategory(id));
+    }
+
+    @PostMapping
+    public ResponseDo insertOrUpdate(@RequestBody Category category) {
+        return new ResponseDo(200, categoryService.insertOrUpdate(category));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseDo deleteByid(@PathVariable(value = "id") Integer id) {
+        return new ResponseDo(200, categoryService.deleteById(id));
     }
 }

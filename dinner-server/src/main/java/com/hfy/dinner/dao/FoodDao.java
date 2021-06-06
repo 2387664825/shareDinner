@@ -22,4 +22,13 @@ public interface FoodDao extends BaseMapper<Food> {
     List<Food> selectBYFamilyId(Integer familydId);
 
     List<Food> selectByDto(FoodQueryDto queryDto);
+
+    @Select("select * from food where family_id = #{familyId} and today = 1")
+    List<Food> selectByFaimlyIdToday(Integer familyId);
+
+    @Select("update food set today = 0 where family_id = #{familyId} ")
+    void clearToDay(Integer familyId);
+
+    @Select("update food set today = 1 where id = #{id} ")
+    void setToDay(Integer id);
 }
