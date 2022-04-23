@@ -61,6 +61,7 @@ public class FamilyService {
         return new PageInfo<>(families);
     }
 
+
     public Family getById(Integer familyId) {
         Family family = familyDao.selectById(familyId);
         if (family.getFamilyCount() <= family.getReceiveCount()) {
